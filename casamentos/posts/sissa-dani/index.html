@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index,follow">
+  <title>sissa + dani</title>
+  <meta name="description" content="sissa + dani">
+  <link rel="icon" type="image/svg+xml" href="../../../img/brand/miolo-favicon.svg">
+  <link rel="preconnect" href="https://type.cargo.site" crossorigin>
+  <style>
+    @font-face {
+      font-display: block;
+      font-family: "Monument Grotesk Variable";
+      src: url("https://type.cargo.site/files/CargoMonumentGroteskPlusVariable.woff2") format("woff2-variations"),
+           url("https://type.cargo.site/files/CargoMonumentGroteskPlusVariable.woff") format("woff");
+      font-style: normal;
+      font-weight: 200 1000;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html {
+      font-size: 62.5%;
+      margin: 0;
+      padding: 0;
+      letter-spacing: 0.03em;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+    }
+
+    :root {
+      --paper: #fafafa;
+      --ink: #1d1d1b;
+      --brand-color: #1d1d1b;
+      --site-gutter-left: 8rem;
+      --site-gutter-right: 8rem;
+      --outer-gutter: 12px;
+      --meta-side-margin: 38px;
+      --meta-size: 12.6px;
+      --meta-track: 0.08em;
+      --edge-band: 42px;
+      --post-gallery-width: min(54vw, 82rem);
+      --post-text-gap: 3.2rem;
+      --post-text-width: clamp(14rem, calc(50vw - (var(--post-gallery-width) / 2) - var(--site-gutter-left) - var(--post-text-gap)), 32rem);
+    }
+
+    body {
+      --brand-color: #000000;
+      --site-gutter-left: 8rem;
+      --site-gutter-right: 8rem;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background-color: rgba(255, 255, 255, 0.72);
+      color: var(--brand-color);
+      font-family: "Monument Grotesk Variable", -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      font-variation-settings: "slnt" 0, "MONO" 0;
+      overflow-x: hidden;
+    }
+
+    @media (min-width: 641px) {
+      html,
+      body {
+        height: 100%;
+        overflow: hidden;
+      }
+    }
+
+    img {
+      border: 0;
+      padding: 0;
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .edge-meta {
+      position: fixed;
+      left: 0;
+      right: 0;
+      z-index: 3;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: flex-start;
+      padding: 12px calc(var(--outer-gutter) + var(--meta-side-margin));
+      font-size: var(--meta-size);
+      font-weight: 700;
+      letter-spacing: var(--meta-track);
+      text-transform: uppercase;
+      line-height: 1;
+      color: var(--ink);
+      pointer-events: none;
+      mix-blend-mode: multiply;
+    }
+
+    .edge-meta a,
+    .edge-meta button {
+      pointer-events: auto;
+    }
+
+    .edge-meta--top {
+      top: 0;
+      align-items: center;
+      z-index: 200;
+    }
+
+    .edge-meta--bottom {
+      bottom: 0;
+      align-items: flex-end;
+      z-index: 3;
+    }
+
+    .edge-meta__center,
+    .edge-meta__right,
+    .edge-meta__left {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .edge-meta__center {
+      justify-content: center;
+      justify-self: center;
+    }
+
+    .edge-meta__left {
+      justify-self: start;
+    }
+
+    .edge-meta__right {
+      justify-self: end;
+    }
+
+    .edge-meta__home {
+      display: block;
+      pointer-events: auto;
+    }
+
+    .edge-meta__brand {
+      width: clamp(116px, 15vw, 210px);
+      height: auto;
+      filter: brightness(0) saturate(100%);
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .edge-meta__left,
+    .edge-meta__right {
+      flex: 0 0 auto;
+    }
+
+    .edge-meta__bottom-note {
+      max-width: 180px;
+      white-space: normal;
+      line-height: 1.16;
+      text-align: left;
+      transform: translateX(-58px);
+    }
+
+    #nav-about-btn,
+    #nav-close-btn {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      letter-spacing: inherit;
+      line-height: 1;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    #nav-close-btn {
+      display: none;
+    }
+
+    #about-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 150;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    #about-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #about-text {
+      max-width: 800px;
+      width: calc(100% - var(--site-gutter-left) - var(--site-gutter-right));
+      text-align: justify;
+      font-family: Helvetica;
+      font-size: 2rem;
+      font-weight: 500;
+      line-height: 1.24;
+      color: var(--brand-color);
+      letter-spacing: 0.01em;
+      text-transform: lowercase;
+    }
+
+    #about-text p {
+      margin: 0 0 1.45em 0;
+    }
+
+    #about-text p:last-child {
+      margin-bottom: 0;
+      letter-spacing: 0.08em;
+      text-align: justify;
+    }
+
+    #about-text .about-contact {
+      padding-top: 1.2em;
+      font-size: 0.85em;
+      letter-spacing: 0.03em;
+      text-align: right;
+    }
+
+    #about-text p.about-contact:last-child {
+      text-align: right;
+      letter-spacing: 0.03em;
+    }
+
+    #about-text .about-contact::before {
+      content: "";
+      display: block;
+      width: 100%;
+      border-top: 1px solid currentColor;
+      opacity: 0.35;
+      margin-bottom: 1.2em;
+    }
+
+    #about-text .about-contact .contact-separator {
+      display: inline-block;
+      margin: 0 0.45em;
+      opacity: 0.5;
+    }
+
+    #about-text .about-contact-label {
+      font-weight: 700;
+    }
+
+    #post-wrap {
+      position: fixed;
+      inset: 0;
+      padding: calc(var(--edge-band) + 50px) var(--site-gutter-left) calc(var(--edge-band) + 92px);
+      overflow: hidden;
+    }
+
+    .post-shell {
+      position: relative;
+      height: 100%;
+      width: 100%;
+      max-width: none;
+      margin: 0;
+    }
+
+    .post-title {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: var(--post-text-width);
+      margin: 0;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: clamp(2.6rem, 2.7vw, 4rem);
+      font-weight: 500;
+      line-height: 1.04;
+      letter-spacing: 0.01em;
+      text-align: left;
+      text-transform: lowercase;
+    }
+
+    .post-gallery {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: var(--post-gallery-width);
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 1.6rem;
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding-bottom: 1px;
+      scrollbar-width: none;
+    }
+
+    .post-gallery::-webkit-scrollbar {
+      display: none;
+    }
+
+    .post-shot {
+      flex: 0 0 auto;
+      margin: 0;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    .post-shot img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    #grain-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 10000;
+      opacity: 0.42;
+    }
+
+    @media (max-width: 960px) {
+      :root {
+        --outer-gutter: 10px;
+        --meta-side-margin: 18px;
+        --site-gutter-left: 4rem;
+        --site-gutter-right: 4rem;
+        --edge-band: 40px;
+        --post-gallery-width: min(58vw, 62rem);
+        --post-text-gap: 2rem;
+        --post-text-width: clamp(11rem, calc(50vw - (var(--post-gallery-width) / 2) - var(--site-gutter-left) - var(--post-text-gap)), 22rem);
+      }
+
+      .edge-meta__brand {
+        width: clamp(108px, 20vw, 176px);
+      }
+
+      .post-shell {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 640px) {
+      :root {
+        --outer-gutter: 8px;
+        --meta-side-margin: 0px;
+        --meta-size: 11.2px;
+        --edge-band: 82px;
+      }
+
+      html,
+      body {
+        overflow-x: hidden;
+      }
+
+      body {
+        overflow-y: auto;
+      }
+
+      .edge-meta {
+        mix-blend-mode: normal;
+      }
+
+      .edge-meta--top {
+        grid-template-columns: auto minmax(0, 1fr);
+        grid-template-areas:
+          "brand brand"
+          "left right";
+        row-gap: 6px;
+        align-items: center;
+        padding: 8px var(--outer-gutter) 6px;
+        background: rgba(250, 250, 250, 0.92);
+      }
+
+      .edge-meta--top .edge-meta__left {
+        grid-area: left;
+      }
+
+      .edge-meta--top .edge-meta__center {
+        grid-area: brand;
+      }
+
+      .edge-meta--top .edge-meta__right {
+        grid-area: right;
+        gap: 8px;
+      }
+
+      .edge-meta--top a,
+      .edge-meta--top button {
+        min-height: 32px;
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .edge-meta--bottom {
+        position: static;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 0 var(--outer-gutter) 28px;
+        background: var(--paper);
+      }
+
+      .edge-meta__bottom-note {
+        max-width: 124px;
+        transform: none;
+      }
+
+      .edge-meta__brand {
+        width: clamp(98px, 28vw, 124px);
+      }
+
+      #post-wrap {
+        position: static;
+        padding: calc(var(--edge-band) + 22px) var(--outer-gutter) 28px;
+        overflow: visible;
+      }
+
+      .post-shell {
+        display: block;
+        position: static;
+        height: auto;
+        max-width: 100%;
+      }
+
+      #about-overlay {
+        align-items: flex-start;
+        justify-content: center;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        padding: calc(var(--edge-band) + 18px) 20px 40px;
+      }
+
+      #about-text {
+        width: min(100%, 34rem);
+        max-width: none;
+        font-size: 1.6rem;
+        line-height: 1.38;
+        text-align: left;
+        letter-spacing: 0;
+      }
+
+      #about-text p:last-child,
+      #about-text p.about-contact:last-child {
+        text-align: left;
+        letter-spacing: 0;
+      }
+
+      #about-text .about-contact {
+        font-size: 1.4rem;
+        text-align: left;
+        overflow-wrap: anywhere;
+      }
+
+      #about-text .about-contact a {
+        display: block;
+        margin-top: 0.35em;
+      }
+
+      #about-text .about-contact .contact-separator {
+        display: none;
+      }
+
+      .post-title {
+        position: static;
+        width: auto;
+        margin-bottom: 1.8rem;
+        font-size: 2.2rem;
+      }
+
+      .post-shot {
+        margin-bottom: 0;
+      }
+
+      .post-gallery {
+        position: static;
+        top: auto;
+        bottom: auto;
+        left: auto;
+        width: auto;
+        transform: none;
+        display: flex;
+        overflow: visible;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="edge-meta edge-meta--top">
+    <nav class="edge-meta__left" aria-label="Navegação institucional">
+      <button id="nav-about-btn" type="button" aria-label="Abrir sobre">about</button>
+      <button id="nav-close-btn" type="button" aria-label="Fechar sobre">close</button>
+    </nav>
+    <div class="edge-meta__center">
+      <a class="edge-meta__home" href="../../../" aria-label="Ir para a home do casamento">
+        <img class="edge-meta__brand" src="../../../img/brand/marca-p-clean.svg" alt="miolo">
+      </a>
+    </div>
+    <nav class="edge-meta__right" aria-label="Navegação">
+      <a href="../../">casamentos</a>
+    </nav>
+  </header>
+
+  <main id="post-wrap" aria-label="sissa + dani">
+    <article class="post-shell">
+      <h1 class="post-title">sissa + dani</h1>
+      <section class="post-gallery" aria-label="galeria de imagens">
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/001__1300_ad0e6278-bbaf-413c-85c1-3d2683928844.webp" alt="sissa + dani 1" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/002__1300_fe684a48-0ac2-4a20-8156-412392643255.webp" alt="sissa + dani 2" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/003__1300_1cfdc4b5-20de-4d47-aa65-d2433585dd86.webp" alt="sissa + dani 3" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/004__1300_09c99764-ac84-456a-a21f-8768bf2c6b53.webp" alt="sissa + dani 4" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/005__1300_72b2f3f9-557a-4276-88e1-70065de00c24.webp" alt="sissa + dani 5" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/006__1300_173ddb74-da1e-4732-958e-2f00480c6e71.webp" alt="sissa + dani 6" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/007__1300_364f24f0-78a1-4857-9b4c-abe7e4f964e7.webp" alt="sissa + dani 7" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/008__1300_16b9cba0-b56b-4ea3-bd32-d906f15c629d.webp" alt="sissa + dani 8" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/009__1300_68556133-3bde-4d09-a75f-ced6ad216a78.webp" alt="sissa + dani 9" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/010__1300_c38c9557-199d-4f20-ab76-9bedd8c0c0fd.webp" alt="sissa + dani 10" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/011__1300_f94beef3-d867-4b9d-a7ff-687c6512c039.webp" alt="sissa + dani 11" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/012__1300_7670d8c0-289a-462e-9cc3-0d912880c946.webp" alt="sissa + dani 12" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/013__1300_fb4e2ba0-cc79-4023-93ff-5104999f17f9.webp" alt="sissa + dani 13" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/014__1300_59d1ecd5-73d5-48ce-8ede-1c2e8b7ed412.webp" alt="sissa + dani 14" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/015__1300_a50e54cf-81c0-4034-a824-a73f0ea3e77f.webp" alt="sissa + dani 15" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/016__1300_35a6dd9a-4c3a-48db-ad77-4e80256ff0cd.webp" alt="sissa + dani 16" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/017__1300_f4660f53-badf-4bb5-b97c-f232e961b71d.webp" alt="sissa + dani 17" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/018__1300_e4a532be-f4ad-43b4-9cb7-189446a5b6a3.webp" alt="sissa + dani 18" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/019__1300_b221f44f-e3ff-48c7-81ff-39e2304d33b7.webp" alt="sissa + dani 19" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/020__1300_091155b2-50db-4353-972a-e00ef94ce1d1.webp" alt="sissa + dani 20" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/021__1300_7967c5e8-5138-496c-a7ce-2c90ffe72d87.webp" alt="sissa + dani 21" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/022__1300_563debda-e063-4c08-810b-54a5fdd3f769.webp" alt="sissa + dani 22" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/023__1300_5fd9deee-c499-4c41-a6e7-b231b4299e26.webp" alt="sissa + dani 23" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/024__1300_77071927-c1d9-4efa-bdde-870c8197254e.webp" alt="sissa + dani 24" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/025__1300_4465ad5e-1e5c-4764-bc06-9fba617028c8.webp" alt="sissa + dani 25" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/026__1300_f3995be3-3d2b-4355-9f73-90224963c68d.webp" alt="sissa + dani 26" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/027__1300_73770c79-76b2-467b-8233-9b65d2223e40.webp" alt="sissa + dani 27" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/028__1300_a3cac408-2d89-40c8-8e60-bfccb3e55737.webp" alt="sissa + dani 28" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/029__1300_c37ae8d2-08d7-4277-85a2-11e86edaeab8.webp" alt="sissa + dani 29" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/030__1300_0e514678-a8a8-44f2-8b69-1a799690b61d.webp" alt="sissa + dani 30" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/031__1300_aa958410-032f-4db9-a555-8ab558619606.webp" alt="sissa + dani 31" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/032__1300_1563161d-4e66-4287-88b5-e7df193e9507.webp" alt="sissa + dani 32" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/033__1300_69477a83-40be-4ea0-8cf3-d5606e4fd44b.webp" alt="sissa + dani 33" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/034__1300_9d8c9a0d-eb0f-4a2f-8821-f9dc98595613.webp" alt="sissa + dani 34" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/035__1300_c7d8510b-d9ea-40da-acb5-a5edfebc146e.webp" alt="sissa + dani 35" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/036__1300_4dec541c-c4ec-4085-8c0b-e96f00507ffd.webp" alt="sissa + dani 36" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/037__1300_b559a2dd-e953-4568-999b-5a7edc007287.webp" alt="sissa + dani 37" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/038__1300_7ef03736-2597-4de3-937b-8080b3b9cf4c.webp" alt="sissa + dani 38" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/039__1300_e8b20514-ea3b-47af-91e7-9dc5febe2257.webp" alt="sissa + dani 39" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/040__1300_faa9399d-8964-40ae-be5e-5caed64e4d7e.webp" alt="sissa + dani 40" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/041__1300_0eeafd0f-43c7-4f68-9ef4-b042561acfff.webp" alt="sissa + dani 41" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/042__1300_1742e352-bf44-4ea3-a3f4-b43e5fee7489.webp" alt="sissa + dani 42" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/043__1300_eefc46ad-fb9e-4ff8-ae26-54b248c6d8d6.webp" alt="sissa + dani 43" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/044__1300_071b55e0-38a4-4819-b888-82870c1d80a5.webp" alt="sissa + dani 44" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/045__1300_2e52dd58-2017-44ca-b299-5871a96ad731.webp" alt="sissa + dani 45" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/046__1300_cefc17cc-821e-4e9a-88e2-5cad7c38c26c.webp" alt="sissa + dani 46" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/047__1300_5e3734c1-a29e-4c7e-9cc7-b494f36c8c80.webp" alt="sissa + dani 47" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/048__1300_b0833912-a9dd-4e74-b5fd-d7969ce0130e.webp" alt="sissa + dani 48" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/049__1300_d59809aa-2ab0-4414-b5e0-b264b16ac760.webp" alt="sissa + dani 49" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/050__1300_62776388-3a84-48c9-b147-5f2c7f5aab36.webp" alt="sissa + dani 50" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/051__1300_2c7dbc73-e87e-4316-8eb5-bc2fa7f07fef.webp" alt="sissa + dani 51" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/052__1300_3051ba9c-5bf1-4d4a-9896-6151e99d55fc.webp" alt="sissa + dani 52" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/053__1300_226d342f-f271-471b-902d-4882f1bb2948.webp" alt="sissa + dani 53" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/054__1300_eebb948f-f519-495e-a029-b9214921d6c5.webp" alt="sissa + dani 54" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/055__1300_2277d110-2b90-4845-83c1-21f360465c34.webp" alt="sissa + dani 55" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/056__1300_8301aeeb-b61c-409a-a7e7-d46ad2f8e65f.webp" alt="sissa + dani 56" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/057__1300_7169b223-1479-44e2-b13e-33bc18ed2be2.webp" alt="sissa + dani 57" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/058__1300_0e24ac76-56fb-47f4-9f76-636847aaabf0.webp" alt="sissa + dani 58" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/059__1300_df45cacb-d6e6-4497-9666-965932b84b75.webp" alt="sissa + dani 59" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/060__1300_9bffc571-f08a-4538-9058-6e67cd8bf441.webp" alt="sissa + dani 60" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/061__1300_5ef76e46-f943-41c4-bdf3-ee5ab1bfe2e4.webp" alt="sissa + dani 61" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/062__1300_0387ab8b-7129-421d-927a-9f5d12861c30.webp" alt="sissa + dani 62" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/063__1300_2f25f1b5-9c87-46ea-bd1a-804e5d6fafd7.webp" alt="sissa + dani 63" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/064__1300_c1288fd5-3dc5-4989-95a8-5df55b6eccbb.webp" alt="sissa + dani 64" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/065__1300_bcbac613-5dfa-4bee-a579-01c69de30d7b.webp" alt="sissa + dani 65" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/066__1300_e07177c2-04ba-4518-ae37-93c404036a0d.webp" alt="sissa + dani 66" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/067__1300_07ab0ba5-a52f-42fa-8c88-9de2085355da.webp" alt="sissa + dani 67" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/068__1300_dcc8a2f1-533a-46c6-85cf-db98a8f7d69e.webp" alt="sissa + dani 68" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/069__1300_072148fe-8a81-48cc-afd2-aa22b0f466bf.webp" alt="sissa + dani 69" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/070__1300_2c9b5370-d5d8-4249-ac88-e21e1c873b64.webp" alt="sissa + dani 70" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/071__1300_053f7049-b7b1-4606-a106-05f258b6e583.webp" alt="sissa + dani 71" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/072__1300_e9ed2afa-83bb-4b74-8d3e-07e4b4998026.webp" alt="sissa + dani 72" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/073__1300_947348aa-3155-47ec-ab2f-fbb3d5f4947e.webp" alt="sissa + dani 73" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/074__1300_04bc371f-adff-4749-a873-6ed6e4e9abdf.webp" alt="sissa + dani 74" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/075__1300_3f11b330-45e5-4c0d-a0f8-94bd43df067b.webp" alt="sissa + dani 75" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/076__1300_ca88d634-21ab-4ffe-a952-6f21ee06a032.webp" alt="sissa + dani 76" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/077__1300_ce813eaf-f30f-443b-8958-37bc8e441b13.webp" alt="sissa + dani 77" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/078__1300_fb73914e-63a2-483a-80c9-9896dda1099e.webp" alt="sissa + dani 78" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/079__1300_eb7a670f-d8f3-4d4b-9eb3-c02571b3dac5.webp" alt="sissa + dani 79" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/080__1300_c39f2252-7ee8-456a-a9a6-5d946f7f4ccf.webp" alt="sissa + dani 80" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/081__1300_567175b5-f46a-4a70-971b-e344b998c283.webp" alt="sissa + dani 81" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/082__1300_74d4371e-6289-4f05-b4b1-79d057768331.webp" alt="sissa + dani 82" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/083__1300_5f8b4a9e-f13e-4d9e-9b65-456a77ff2470.webp" alt="sissa + dani 83" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/084__1300_a3325aec-d6c0-4ab0-a4e1-efbf0710a491.webp" alt="sissa + dani 84" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/sissa-dani/085__1300_2f26f9f8-00db-487f-9654-d8b3b79a7b5c.webp" alt="sissa + dani 85" loading="lazy" decoding="async">
+        </figure>
+      </section>
+    </article>
+  </main>
+
+  <footer class="edge-meta edge-meta--bottom" aria-hidden="true">
+    <div class="edge-meta__left"></div>
+    <div class="edge-meta__center">salvador · bh · sp · rio · floripa</div>
+    <div class="edge-meta__right">
+      <span class="edge-meta__bottom-note">explore.<br>conteudo, imagem<br>e presenca.</span>
+    </div>
+  </footer>
+  <div id="about-overlay" role="dialog" aria-modal="true" aria-label="Sobre">
+    <div id="about-text">
+      <p>sem verdade, não há foto.</p>
+      <p>entendemos que a fotografia não registra o amor porque ela mora na superfície; ao contrário do amor que vive no íntimo. e lá não se entra. então nosso papel é de registrar signos que representam o que nós não alcançaremos.</p>
+      <p>diante disso, trabalhamos com uma linguagem que sustenta o registro desromantizado do casamento, buscando sempre respeitar o que mora no íntimo e reservando isso somente para o casal. o que vocês sentem diz a respeito somente a vocês! é desromantico, é distanciado e é honesto.</p>
+      <p>não acreditamos em casamentos com formatos megalomaníacos regados a roteiros e protocolos. não achamos que contos de fadas existam e quanto a príncipes e princesas, até acredito que existam; mas que fiquem restritos a monarquia. aqui preferimos pessoas reais, palpáveis, vivas e que respiram. e que transpiram e que vivem da forma que acham que devam viver.</p>
+    </div>
+  </div>
+  <canvas id="grain-canvas" aria-hidden="true"></canvas>
+
+  <script>
+    (function () {
+      const grainCanvas = document.getElementById('grain-canvas');
+      const grainCtx = grainCanvas.getContext('2d', { alpha: true });
+      const aboutOverlay = document.getElementById('about-overlay');
+      const btnAbout = document.getElementById('nav-about-btn');
+      const btnClose = document.getElementById('nav-close-btn');
+
+      function openAbout() {
+        if (!aboutOverlay || !btnAbout || !btnClose) return;
+
+        aboutOverlay.classList.add('active');
+        btnAbout.style.display = 'none';
+        btnClose.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeAbout() {
+        if (!aboutOverlay || !btnAbout || !btnClose) return;
+
+        aboutOverlay.classList.remove('active');
+        btnAbout.style.display = 'block';
+        btnClose.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+
+      function resizeGrainCanvas() {
+        grainCanvas.width = window.innerWidth;
+        grainCanvas.height = window.innerHeight;
+      }
+
+      function drawGrain() {
+        const width = grainCanvas.width;
+        const height = grainCanvas.height;
+        const imageData = grainCtx.createImageData(width, height);
+        const buffer = imageData.data;
+
+        for (let i = 0; i < buffer.length; i += 4) {
+          const noise = Math.random() * 255;
+          const alpha = Math.random() > 0.55 ? 95 : 35;
+
+          buffer[i] = noise;
+          buffer[i + 1] = noise;
+          buffer[i + 2] = noise;
+          buffer[i + 3] = alpha;
+        }
+
+        grainCtx.putImageData(imageData, 0, 0);
+      }
+
+      function refresh() {
+        resizeGrainCanvas();
+        drawGrain();
+      }
+
+      window.addEventListener('resize', refresh, { passive: true });
+      btnAbout?.addEventListener('click', openAbout);
+      btnClose?.addEventListener('click', closeAbout);
+      aboutOverlay?.addEventListener('click', (event) => {
+        if (event.target === aboutOverlay) closeAbout();
+      });
+      refresh();
+      setInterval(drawGrain, 180);
+    }());
+  </script>
+</body>
+</html>

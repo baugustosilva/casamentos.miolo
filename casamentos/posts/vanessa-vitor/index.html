@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index,follow">
+  <title>vanessa + vitor</title>
+  <meta name="description" content="vanessa + vitor">
+  <link rel="icon" type="image/svg+xml" href="../../../img/brand/miolo-favicon.svg">
+  <link rel="preconnect" href="https://type.cargo.site" crossorigin>
+  <style>
+    @font-face {
+      font-display: block;
+      font-family: "Monument Grotesk Variable";
+      src: url("https://type.cargo.site/files/CargoMonumentGroteskPlusVariable.woff2") format("woff2-variations"),
+           url("https://type.cargo.site/files/CargoMonumentGroteskPlusVariable.woff") format("woff");
+      font-style: normal;
+      font-weight: 200 1000;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html {
+      font-size: 62.5%;
+      margin: 0;
+      padding: 0;
+      letter-spacing: 0.03em;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+    }
+
+    :root {
+      --paper: #fafafa;
+      --ink: #1d1d1b;
+      --brand-color: #1d1d1b;
+      --site-gutter-left: 8rem;
+      --site-gutter-right: 8rem;
+      --outer-gutter: 12px;
+      --meta-side-margin: 38px;
+      --meta-size: 12.6px;
+      --meta-track: 0.08em;
+      --edge-band: 42px;
+      --post-gallery-width: min(54vw, 82rem);
+      --post-text-gap: 3.2rem;
+      --post-text-width: clamp(14rem, calc(50vw - (var(--post-gallery-width) / 2) - var(--site-gutter-left) - var(--post-text-gap)), 32rem);
+      --post-copy-top: clamp(6.4rem, 8vw, 10.8rem);
+    }
+
+    body {
+      --brand-color: #000000;
+      --site-gutter-left: 8rem;
+      --site-gutter-right: 8rem;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background-color: rgba(255, 255, 255, 0.72);
+      color: var(--brand-color);
+      font-family: "Monument Grotesk Variable", -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      font-variation-settings: "slnt" 0, "MONO" 0;
+      overflow-x: hidden;
+    }
+
+    @media (min-width: 641px) {
+      html,
+      body {
+        height: 100%;
+        overflow: hidden;
+      }
+    }
+
+    img {
+      border: 0;
+      padding: 0;
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .edge-meta {
+      position: fixed;
+      left: 0;
+      right: 0;
+      z-index: 3;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: flex-start;
+      padding: 12px calc(var(--outer-gutter) + var(--meta-side-margin));
+      font-size: var(--meta-size);
+      font-weight: 700;
+      letter-spacing: var(--meta-track);
+      text-transform: uppercase;
+      line-height: 1;
+      color: var(--ink);
+      pointer-events: none;
+      mix-blend-mode: multiply;
+    }
+
+    .edge-meta a,
+    .edge-meta button {
+      pointer-events: auto;
+    }
+
+    .edge-meta--top {
+      top: 0;
+      align-items: center;
+      z-index: 200;
+    }
+
+    .edge-meta--bottom {
+      bottom: 0;
+      align-items: flex-end;
+      z-index: 3;
+    }
+
+    .edge-meta__center,
+    .edge-meta__right,
+    .edge-meta__left {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .edge-meta__center {
+      justify-content: center;
+      justify-self: center;
+    }
+
+    .edge-meta__left {
+      justify-self: start;
+    }
+
+    .edge-meta__right {
+      justify-self: end;
+    }
+
+    .edge-meta__home {
+      display: block;
+      pointer-events: auto;
+    }
+
+    .edge-meta__brand {
+      width: clamp(116px, 15vw, 210px);
+      height: auto;
+      filter: brightness(0) saturate(100%);
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .edge-meta__left,
+    .edge-meta__right {
+      flex: 0 0 auto;
+    }
+
+    .edge-meta__bottom-note {
+      max-width: 180px;
+      white-space: normal;
+      line-height: 1.16;
+      text-align: left;
+      transform: translateX(-58px);
+    }
+
+    #nav-about-btn,
+    #nav-close-btn {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      letter-spacing: inherit;
+      line-height: 1;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    #nav-close-btn {
+      display: none;
+    }
+
+    #about-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 150;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    #about-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #about-text {
+      max-width: 800px;
+      width: calc(100% - var(--site-gutter-left) - var(--site-gutter-right));
+      text-align: justify;
+      font-family: Helvetica;
+      font-size: 2rem;
+      font-weight: 500;
+      line-height: 1.24;
+      color: var(--brand-color);
+      letter-spacing: 0.01em;
+      text-transform: lowercase;
+    }
+
+    #about-text p {
+      margin: 0 0 1.45em 0;
+    }
+
+    #about-text p:last-child {
+      margin-bottom: 0;
+      letter-spacing: 0.08em;
+      text-align: justify;
+    }
+
+    #about-text .about-contact {
+      padding-top: 1.2em;
+      font-size: 0.85em;
+      letter-spacing: 0.03em;
+      text-align: right;
+    }
+
+    #about-text p.about-contact:last-child {
+      text-align: right;
+      letter-spacing: 0.03em;
+    }
+
+    #about-text .about-contact::before {
+      content: "";
+      display: block;
+      width: 100%;
+      border-top: 1px solid currentColor;
+      opacity: 0.35;
+      margin-bottom: 1.2em;
+    }
+
+    #about-text .about-contact .contact-separator {
+      display: inline-block;
+      margin: 0 0.45em;
+      opacity: 0.5;
+    }
+
+    #about-text .about-contact-label {
+      font-weight: 700;
+    }
+
+    #post-wrap {
+      position: fixed;
+      inset: 0;
+      padding: calc(var(--edge-band) + 50px) var(--site-gutter-left) calc(var(--edge-band) + 92px);
+      overflow: hidden;
+    }
+
+    .post-shell {
+      position: relative;
+      height: 100%;
+      width: 100%;
+      max-width: none;
+      margin: 0;
+    }
+
+    .post-title {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: var(--post-text-width);
+      margin: 0;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: clamp(2.6rem, 2.7vw, 4rem);
+      font-weight: 500;
+      line-height: 1.04;
+      letter-spacing: 0.01em;
+      text-align: left;
+      text-transform: lowercase;
+    }
+
+    .post-copy {
+      position: absolute;
+      top: var(--post-copy-top);
+      left: 0;
+      width: var(--post-text-width);
+      max-width: none;
+      max-height: calc(100% - var(--post-copy-top));
+      margin: 0;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 1.7rem;
+      line-height: 1.58;
+      letter-spacing: 0.01em;
+      text-transform: none;
+      overflow: hidden;
+    }
+
+    .post-copy p {
+      margin: 0 0 1.1em;
+    }
+
+    .post-copy p:last-child {
+      margin-bottom: 0;
+    }
+
+    .post-gallery {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: var(--post-gallery-width);
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 1.6rem;
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding-bottom: 1px;
+      scrollbar-width: none;
+    }
+
+    .post-gallery::-webkit-scrollbar {
+      display: none;
+    }
+
+    .post-shot {
+      flex: 0 0 auto;
+      margin: 0;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    .post-shot img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    #grain-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 10000;
+      opacity: 0.42;
+    }
+
+    @media (max-width: 960px) {
+      :root {
+        --outer-gutter: 10px;
+        --meta-side-margin: 18px;
+        --site-gutter-left: 4rem;
+        --site-gutter-right: 4rem;
+        --edge-band: 40px;
+        --post-gallery-width: min(58vw, 62rem);
+        --post-text-gap: 2rem;
+        --post-text-width: clamp(11rem, calc(50vw - (var(--post-gallery-width) / 2) - var(--site-gutter-left) - var(--post-text-gap)), 22rem);
+        --post-copy-top: 6rem;
+      }
+
+      .edge-meta__brand {
+        width: clamp(108px, 20vw, 176px);
+      }
+
+      .post-shell {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 640px) {
+      :root {
+        --outer-gutter: 8px;
+        --meta-side-margin: 0px;
+        --meta-size: 11.2px;
+        --edge-band: 82px;
+      }
+
+      html,
+      body {
+        overflow-x: hidden;
+      }
+
+      body {
+        overflow-y: auto;
+      }
+
+      .edge-meta {
+        mix-blend-mode: normal;
+      }
+
+      .edge-meta--top {
+        grid-template-columns: auto minmax(0, 1fr);
+        grid-template-areas:
+          "brand brand"
+          "left right";
+        row-gap: 6px;
+        align-items: center;
+        padding: 8px var(--outer-gutter) 6px;
+        background: rgba(250, 250, 250, 0.92);
+      }
+
+      .edge-meta--top .edge-meta__left {
+        grid-area: left;
+      }
+
+      .edge-meta--top .edge-meta__center {
+        grid-area: brand;
+      }
+
+      .edge-meta--top .edge-meta__right {
+        grid-area: right;
+        gap: 8px;
+      }
+
+      .edge-meta--top a,
+      .edge-meta--top button {
+        min-height: 32px;
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .edge-meta--bottom {
+        position: static;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 0 var(--outer-gutter) 28px;
+        background: var(--paper);
+      }
+
+      .edge-meta__bottom-note {
+        max-width: 124px;
+        transform: none;
+      }
+
+      .edge-meta__brand {
+        width: clamp(98px, 28vw, 124px);
+      }
+
+      #post-wrap {
+        position: static;
+        padding: calc(var(--edge-band) + 22px) var(--outer-gutter) 28px;
+        overflow: visible;
+      }
+
+      .post-shell {
+        display: block;
+        position: static;
+        height: auto;
+        max-width: 100%;
+      }
+
+      #about-overlay {
+        align-items: flex-start;
+        justify-content: center;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        padding: calc(var(--edge-band) + 18px) 20px 40px;
+      }
+
+      #about-text {
+        width: min(100%, 34rem);
+        max-width: none;
+        font-size: 1.6rem;
+        line-height: 1.38;
+        text-align: left;
+        letter-spacing: 0;
+      }
+
+      #about-text p:last-child,
+      #about-text p.about-contact:last-child {
+        text-align: left;
+        letter-spacing: 0;
+      }
+
+      #about-text .about-contact {
+        font-size: 1.4rem;
+        text-align: left;
+        overflow-wrap: anywhere;
+      }
+
+      #about-text .about-contact a {
+        display: block;
+        margin-top: 0.35em;
+      }
+
+      #about-text .about-contact .contact-separator {
+        display: none;
+      }
+
+      .post-title {
+        position: static;
+        width: auto;
+        margin-bottom: 1.8rem;
+        font-size: 2.2rem;
+      }
+
+      .post-copy {
+        position: static;
+        width: auto;
+        max-height: none;
+        margin-bottom: 2.4rem;
+        font-size: 1.55rem;
+        line-height: 1.55;
+        overflow: visible;
+      }
+
+      .post-gallery {
+        position: static;
+        top: auto;
+        bottom: auto;
+        left: auto;
+        width: auto;
+        transform: none;
+        display: flex;
+        overflow: visible;
+      }
+
+      .post-shot {
+        margin-bottom: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="edge-meta edge-meta--top">
+    <nav class="edge-meta__left" aria-label="Navegação institucional">
+      <button id="nav-about-btn" type="button" aria-label="Abrir sobre">about</button>
+      <button id="nav-close-btn" type="button" aria-label="Fechar sobre">close</button>
+    </nav>
+    <div class="edge-meta__center">
+      <a class="edge-meta__home" href="../../../" aria-label="Ir para a home do casamento">
+        <img class="edge-meta__brand" src="../../../img/brand/marca-p-clean.svg" alt="miolo">
+      </a>
+    </div>
+    <nav class="edge-meta__right" aria-label="Navegação">
+      <a href="../../">casamentos</a>
+    </nav>
+  </header>
+
+  <main id="post-wrap" aria-label="vanessa + vitor">
+    <article class="post-shell">
+      <h1 class="post-title">vanessa + vitor</h1>
+      <section class="post-copy" aria-label="texto do post">
+        <p>eu não sei como começar esse post. juro!</p>
+        <p>acho que primeiro vou começar agradecendo ao Marco Túlio por ser tão parceiro e Vanessa e Vitor por tamanha lindeza.</p>
+        <p>sabe aquele dia que tem tudo pra dar certo e realmente dá? pois é, foi esse sábado ai. não tinha nada pra dar errado ali. Vanessa e Vitor são dois apaixonados, inteligentes e maravilhosos. aquele tipo de casal que você se apaix</p>
+      </section>
+      <section class="post-gallery" aria-label="galeria de imagens">
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/001__1300_f2d1e637-2ce5-44b5-9f4d-49de8e41d923.webp" alt="vanessa + vitor 1" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/002__1300_79664957-2d04-4f99-a66a-b69de729cc64.webp" alt="vanessa + vitor 2" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/003__1300_450e5aff-388f-4204-a7af-35b0e2e99b9a.webp" alt="vanessa + vitor 3" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/004__1300_3ace8c36-c04d-4793-bed9-21d50f156b9b.webp" alt="vanessa + vitor 4" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/005__1300_aba9dd7d-e185-43e6-a4bf-f26f10dc4ee9.webp" alt="vanessa + vitor 5" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/006__1300_6dc3e334-aa7a-46ae-850e-f375e0706caa.webp" alt="vanessa + vitor 6" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/007__1300_e6156723-a05f-4fd5-8253-dcf9b9c513a3.webp" alt="vanessa + vitor 7" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/008__1300_851c9549-16a0-4374-93f4-fee4db587bb1.webp" alt="vanessa + vitor 8" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/009__1300_502acd12-576c-4573-bedb-2fdfb13e2ea4.webp" alt="vanessa + vitor 9" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/010__1300_2560b2ca-2687-4bec-bbaa-18b8657848e6.webp" alt="vanessa + vitor 10" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/011__1300_f998bfb3-fc86-4af7-9c19-9767886e5e4e.webp" alt="vanessa + vitor 11" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/012__1300_33e7e597-9157-4f49-9d98-73b26cac492e.webp" alt="vanessa + vitor 12" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/013__1300_dee48b11-5fa5-4078-9f3f-3e349f2cd7d5.webp" alt="vanessa + vitor 13" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/014__1300_718d6d08-1d0c-4324-b348-ebf907057969.webp" alt="vanessa + vitor 14" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/015__1300_c7cc746e-f1e0-4e8f-bcd5-2ffc52090602.webp" alt="vanessa + vitor 15" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/016__1300_004cbc7d-fa40-4b24-8a6b-b6ee66d6540e.webp" alt="vanessa + vitor 16" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/017__1300_77079dff-0089-4a18-8fa2-8be584d8833c.webp" alt="vanessa + vitor 17" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/018__1300_37ee0afc-c587-49a6-9e9c-74b92836a243.webp" alt="vanessa + vitor 18" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/019__1300_d9da7ecd-c82c-45be-b8ec-c35a3db78558.webp" alt="vanessa + vitor 19" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/020__1300_cceae101-948d-4a7b-802a-a952f81f7ed6.webp" alt="vanessa + vitor 20" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/021__1300_1f22becd-6a8c-4948-8530-6eeca9ed9625.webp" alt="vanessa + vitor 21" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/022__1300_57d81d5c-5b66-4cee-969e-ee42e923bbed.webp" alt="vanessa + vitor 22" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/023__1300_dcc978a2-c826-43b1-bb22-3760394e44d9.webp" alt="vanessa + vitor 23" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/024__1300_7bf099ab-56f4-4445-98dd-8bbe2b84781d.webp" alt="vanessa + vitor 24" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/025__1300_9000a074-d8c1-4960-b206-26d0ac513fe0.webp" alt="vanessa + vitor 25" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/026__1300_c9098e3e-db12-4011-b534-9e5211edce54.webp" alt="vanessa + vitor 26" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/027__1300_da5a52df-152a-4adf-a9ec-8587289b490e.webp" alt="vanessa + vitor 27" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/028__1300_0bea970c-8f27-4fd0-82fa-43dbb18bc2ee.webp" alt="vanessa + vitor 28" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/029__1300_5b33165f-8cc1-4d07-9874-76e75888d052.webp" alt="vanessa + vitor 29" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/030__1300_b1ecaf38-a5e9-4578-9b40-a50f08aa83a3.webp" alt="vanessa + vitor 30" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/031__1300_c6d8ef37-07da-451a-ad73-7ce06a1bff45.webp" alt="vanessa + vitor 31" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/032__1300_acda74e7-69b6-4e8e-9cb8-ac561f335abc.webp" alt="vanessa + vitor 32" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/033__1300_74a300eb-8212-4ef7-9189-065f5c821a4e.webp" alt="vanessa + vitor 33" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/034__1300_27ef955f-1d99-4ce3-bfa8-2271bd722f92.webp" alt="vanessa + vitor 34" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/035__1300_defa8e0a-13ef-4ee7-96fe-78901259b2d6.webp" alt="vanessa + vitor 35" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/036__1300_14c10805-e722-4dd8-86c6-5b8175a8d7f2.webp" alt="vanessa + vitor 36" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/037__1300_64c814af-93ea-45b0-8b7d-6be55aaa993f.webp" alt="vanessa + vitor 37" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/038__1300_b1e2e37e-7bb1-4659-8d0e-260a629fa363.webp" alt="vanessa + vitor 38" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/039__1300_2118d9da-d2c0-4561-bb9e-b40c076f95bd.webp" alt="vanessa + vitor 39" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/040__1300_f6147cbd-2f69-4fac-8000-52a3b660ed09.webp" alt="vanessa + vitor 40" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/041__1300_b0097466-1216-4369-80c7-0e803497f6d9.webp" alt="vanessa + vitor 41" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/042__1300_a60d6b98-3572-466d-a1a1-04b11d50f06b.webp" alt="vanessa + vitor 42" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/043__1300_84cf4a97-bc0d-41a4-9218-ad1cbb8ea6c1.webp" alt="vanessa + vitor 43" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/044__1300_3fbc9e60-0c55-412f-aeba-2ae20a9bef1c.webp" alt="vanessa + vitor 44" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/045__1300_1703a1f1-d144-46aa-9a10-700271cfcc17.webp" alt="vanessa + vitor 45" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/046__1300_772733cb-b525-423d-bd73-e34aa7dc2a5a.webp" alt="vanessa + vitor 46" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/047__1300_6da8ac5a-a0a5-4654-b1e1-aa62f6506c6f.webp" alt="vanessa + vitor 47" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/048__1300_a8dbe011-7dc5-465c-80f6-b6b6a4b3f53b.webp" alt="vanessa + vitor 48" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/049__1300_c1ef1cca-c3c4-4393-a352-887e4fe18d68.webp" alt="vanessa + vitor 49" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/050__1300_e1b46d21-673d-4008-956d-94206b6c397c.webp" alt="vanessa + vitor 50" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/051__1300_0369a8f9-20c6-4a30-92ed-390952dcb57c.webp" alt="vanessa + vitor 51" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/052__1300_f4f7788e-0ca8-4fbc-bbc7-169ec5839662.webp" alt="vanessa + vitor 52" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/053__1300_81d45d59-c8c7-4604-b222-7bd9c353be08.webp" alt="vanessa + vitor 53" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/054__1300_fc532164-709b-4ca6-a01d-05f270efcc5d.webp" alt="vanessa + vitor 54" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/055__1300_56abd2a6-8878-4ca2-8bc6-4150b281128a.webp" alt="vanessa + vitor 55" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/056__1300_2a571d2b-491e-4be2-82ad-2c57e766483d.webp" alt="vanessa + vitor 56" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/057__1300_e65db5b6-876f-4e4f-98a7-27258f4842a9.webp" alt="vanessa + vitor 57" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/058__1300_d98d4bb2-d1ef-47cb-b8b7-261408546104.webp" alt="vanessa + vitor 58" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/059__1300_34d56989-1aaa-44ef-b839-a91644b10628.webp" alt="vanessa + vitor 59" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/060__1300_9970a9e8-38a4-465a-829d-64be31638cf7.webp" alt="vanessa + vitor 60" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/061__1300_7a556a7e-d352-4baa-8b0f-b099106e9c81.webp" alt="vanessa + vitor 61" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/062__1300_41803e8a-15ff-456a-9c01-b6779f932d9c.webp" alt="vanessa + vitor 62" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/063__1300_f1090d5f-a60d-4831-9317-67612207058a.webp" alt="vanessa + vitor 63" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/064__1300_336c5b2e-2900-4c6c-8142-812d77d9471e.webp" alt="vanessa + vitor 64" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/065__1300_98da39dc-2168-47c1-828e-abd077d765e0.webp" alt="vanessa + vitor 65" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/066__1300_998ddfa6-2578-427e-b1e0-6c5651bacf0b.webp" alt="vanessa + vitor 66" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/067__1300_ca67da6d-2b3e-4d43-a862-8efe77edd19e.webp" alt="vanessa + vitor 67" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/068__1300_a9d9b804-28fa-496c-8b5c-2e2b1270d806.webp" alt="vanessa + vitor 68" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/069__1300_779780d7-25dc-4ebb-ba6e-26e13c6acbf1.webp" alt="vanessa + vitor 69" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/070__1300_a39c51b7-7494-4aa1-b2fb-c2d2421bf05a.webp" alt="vanessa + vitor 70" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/071__1300_ca863ca4-7c95-4705-bdab-b8b23523618f.webp" alt="vanessa + vitor 71" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/072__1300_d85ba905-c389-4839-bf5a-5a83dae3fc66.webp" alt="vanessa + vitor 72" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/073__1300_962bf9ed-a41c-4674-b248-51e9dd511d52.webp" alt="vanessa + vitor 73" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/074__1300_00b6c868-b67c-4787-acc8-6b99f778f71a.webp" alt="vanessa + vitor 74" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/075__1300_424529ee-2a65-4cbe-9315-60859bc1d879.webp" alt="vanessa + vitor 75" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/076__1300_84aea5a1-26c8-4f0b-bf83-7c8ea33c82a8.webp" alt="vanessa + vitor 76" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/077__1300_55b82e14-104e-4c6e-bb83-02361503da87.webp" alt="vanessa + vitor 77" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/078__1300_3e632be0-757d-4bfd-9bb0-1ea91e5adea6.webp" alt="vanessa + vitor 78" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/079__1300_c96270b4-de73-4f68-a2f8-fda1dd9f5dd9.webp" alt="vanessa + vitor 79" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/080__1300_fe1d3b81-205d-4339-acf7-35cc635eee39.webp" alt="vanessa + vitor 80" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/081__1300_966281e1-cb6d-4df1-8d8b-708e2a460de9.webp" alt="vanessa + vitor 81" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/082__1300_6be7c095-4bf9-478a-84ca-d9ea7cdef6b3.webp" alt="vanessa + vitor 82" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/083__1300_414a31d7-edb0-424a-970f-13599f3597a1.webp" alt="vanessa + vitor 83" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/084__1300_88c52b96-a7c1-4b69-81f9-8c9a712f1418.webp" alt="vanessa + vitor 84" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/085__1300_4414129f-3de3-4627-ae8f-aee6b341b90c.webp" alt="vanessa + vitor 85" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/086__1300_4a4fbf68-c634-49de-9794-f269655963c4.webp" alt="vanessa + vitor 86" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/087__1300_ce5c656b-f832-47da-b2f6-81b80163e824.webp" alt="vanessa + vitor 87" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/088__1300_10e8c6b3-7193-4b7b-a3ca-fdca30d62ac5.webp" alt="vanessa + vitor 88" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/089__1300_12bf4754-0960-45db-9e8a-8f1d1a91f749.webp" alt="vanessa + vitor 89" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/090__1300_7f21ed12-00fb-4377-a1b1-c96d506fb937.webp" alt="vanessa + vitor 90" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/091__1300_cba103cb-5ecc-45d1-8ff3-3906518d3a1b.webp" alt="vanessa + vitor 91" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/092__1300_6afbd55d-5292-4007-9fbe-e2fc5e70078c.webp" alt="vanessa + vitor 92" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/093__1300_90848148-345c-46de-be54-c5ebf66f2e59.webp" alt="vanessa + vitor 93" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/094__1300_b0c30687-594e-4210-bb33-0394dd76a791.webp" alt="vanessa + vitor 94" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/095__1300_9ec016a0-2eb8-461b-8f47-2c4675396238.webp" alt="vanessa + vitor 95" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/096__1300_c8fabaa9-a74d-4f37-8228-f2e505abf46c.webp" alt="vanessa + vitor 96" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/097__1300_a4b8beb8-2f91-43b8-95be-ed229ebadd29.webp" alt="vanessa + vitor 97" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/vanessa-vitor/098__1300_d944030f-dd2e-4211-b36d-33c28ce73dc9.webp" alt="vanessa + vitor 98" loading="lazy" decoding="async">
+        </figure>
+      </section>
+    </article>
+  </main>
+
+  <footer class="edge-meta edge-meta--bottom" aria-hidden="true">
+    <div class="edge-meta__left"></div>
+    <div class="edge-meta__center">salvador · bh · sp · rio · floripa</div>
+    <div class="edge-meta__right">
+      <span class="edge-meta__bottom-note">explore.<br>conteudo, imagem<br>e presenca.</span>
+    </div>
+  </footer>
+  <div id="about-overlay" role="dialog" aria-modal="true" aria-label="Sobre">
+    <div id="about-text">
+      <p>sem verdade, não há foto.</p>
+      <p>entendemos que a fotografia não registra o amor porque ela mora na superfície; ao contrário do amor que vive no íntimo. e lá não se entra. então nosso papel é de registrar signos que representam o que nós não alcançaremos.</p>
+      <p>diante disso, trabalhamos com uma linguagem que sustenta o registro desromantizado do casamento, buscando sempre respeitar o que mora no íntimo e reservando isso somente para o casal. o que vocês sentem diz a respeito somente a vocês! é desromantico, é distanciado e é honesto.</p>
+      <p>não acreditamos em casamentos com formatos megalomaníacos regados a roteiros e protocolos. não achamos que contos de fadas existam e quanto a príncipes e princesas, até acredito que existam; mas que fiquem restritos a monarquia. aqui preferimos pessoas reais, palpáveis, vivas e que respiram. e que transpiram e que vivem da forma que acham que devam viver.</p>
+    </div>
+  </div>
+  <canvas id="grain-canvas" aria-hidden="true"></canvas>
+
+  <script>
+    (function () {
+      const grainCanvas = document.getElementById('grain-canvas');
+      const grainCtx = grainCanvas.getContext('2d', { alpha: true });
+      const aboutOverlay = document.getElementById('about-overlay');
+      const btnAbout = document.getElementById('nav-about-btn');
+      const btnClose = document.getElementById('nav-close-btn');
+
+      function openAbout() {
+        if (!aboutOverlay || !btnAbout || !btnClose) return;
+
+        aboutOverlay.classList.add('active');
+        btnAbout.style.display = 'none';
+        btnClose.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeAbout() {
+        if (!aboutOverlay || !btnAbout || !btnClose) return;
+
+        aboutOverlay.classList.remove('active');
+        btnAbout.style.display = 'block';
+        btnClose.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+
+      function resizeGrainCanvas() {
+        grainCanvas.width = window.innerWidth;
+        grainCanvas.height = window.innerHeight;
+      }
+
+      function drawGrain() {
+        const width = grainCanvas.width;
+        const height = grainCanvas.height;
+        const imageData = grainCtx.createImageData(width, height);
+        const buffer = imageData.data;
+
+        for (let i = 0; i < buffer.length; i += 4) {
+          const noise = Math.random() * 255;
+          const alpha = Math.random() > 0.55 ? 95 : 35;
+
+          buffer[i] = noise;
+          buffer[i + 1] = noise;
+          buffer[i + 2] = noise;
+          buffer[i + 3] = alpha;
+        }
+
+        grainCtx.putImageData(imageData, 0, 0);
+      }
+
+      function refresh() {
+        resizeGrainCanvas();
+        drawGrain();
+      }
+
+      window.addEventListener('resize', refresh, { passive: true });
+      btnAbout?.addEventListener('click', openAbout);
+      btnClose?.addEventListener('click', closeAbout);
+      aboutOverlay?.addEventListener('click', (event) => {
+        if (event.target === aboutOverlay) closeAbout();
+      });
+      refresh();
+      setInterval(drawGrain, 180);
+    }());
+  </script>
+</body>
+</html>

@@ -1,0 +1,1596 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index,follow">
+  <title>miolo</title>
+  <meta name="description" content="miolo. fotografia de casamento.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="miolo">
+  <meta property="og:title" content="miolo">
+  <meta property="og:description" content="fotografia de casamento.">
+  <meta property="og:url" content="https://casamentos.miolo.online/">
+  <meta property="og:image" content="https://casamentos.miolo.online/img/brand/miolo-lockup.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="miolo - fotografia de casamento">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="miolo">
+  <meta name="twitter:description" content="fotografia de casamento.">
+  <meta name="twitter:image" content="https://casamentos.miolo.online/img/brand/miolo-lockup.svg">
+  <link rel="icon" type="image/svg+xml" href="img/brand/miolo-favicon.svg">
+  <style>
+    :root {
+      --paper: #fafafa;
+      --ink: #1d1d1b;
+      --brand-color: #1d1d1b;
+      --site-gutter-left: 8rem;
+      --site-gutter-right: 8rem;
+      --muted: rgba(29, 29, 27, 0.72);
+      --strip-gap: 2px;
+      --outer-gutter: 12px;
+      --meta-side-margin: 38px;
+      --page-side-margin: 180px;
+      --meta-size: 12.6px;
+      --meta-track: 0.08em;
+      --edge-band: 42px;
+      --hover-scale: 1.5;
+      --lateral-gap: 4px;
+      --miolo-grid-scale: 0.25;
+      --lateral-tile-size: calc((100vh - (var(--edge-band) * 2)) * var(--miolo-grid-scale));
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 62.5%;
+    }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      min-height: 100%;
+      background: var(--paper);
+      overflow: hidden;
+    }
+
+    body {
+      position: relative;
+      font-family: Helvetica, Arial, sans-serif;
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .edge-meta {
+      position: fixed;
+      left: 0;
+      right: 0;
+      z-index: 3;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: flex-start;
+      padding: 12px calc(var(--outer-gutter) + var(--meta-side-margin));
+      font-size: var(--meta-size);
+      font-weight: 700;
+      letter-spacing: var(--meta-track);
+      text-transform: uppercase;
+      line-height: 1;
+      color: var(--ink);
+      pointer-events: none;
+      mix-blend-mode: multiply;
+    }
+
+    .edge-meta a,
+    .edge-meta button {
+      pointer-events: auto;
+    }
+
+    .edge-meta--top {
+      top: 0;
+      align-items: center;
+      z-index: 200;
+    }
+
+    .edge-meta--bottom {
+      bottom: 0;
+      align-items: flex-end;
+      z-index: 3;
+    }
+
+    .edge-meta__center,
+    .edge-meta__right,
+    .edge-meta__left {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .edge-meta__center {
+      justify-content: center;
+      justify-self: center;
+    }
+
+    .edge-meta__left {
+      justify-self: start;
+    }
+
+    .edge-meta__right {
+      justify-self: end;
+    }
+
+    .edge-meta__home {
+      display: block;
+      pointer-events: auto;
+    }
+
+    .edge-meta__brand {
+      width: clamp(116px, 15vw, 210px);
+      height: auto;
+      filter: brightness(0) saturate(100%);
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .edge-meta__left,
+    .edge-meta__right {
+      flex: 0 0 auto;
+    }
+
+    .edge-meta__bottom-note {
+      max-width: 180px;
+      white-space: normal;
+      line-height: 1.16;
+      text-align: left;
+      transform: translateX(-58px);
+    }
+
+    #nav-about-btn,
+    #nav-close-btn {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      letter-spacing: inherit;
+      line-height: 1;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    #nav-close-btn {
+      display: none;
+    }
+
+    #about-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 150;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    #about-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #about-text {
+      max-width: 800px;
+      width: calc(100% - var(--site-gutter-left) - var(--site-gutter-right));
+      text-align: justify;
+      font-family: Helvetica;
+      font-size: 2rem;
+      font-weight: 500;
+      line-height: 1.24;
+      color: var(--brand-color);
+      letter-spacing: 0.01em;
+      text-transform: lowercase;
+    }
+
+    #about-text p {
+      margin: 0 0 1.45em 0;
+    }
+
+    #about-text p:last-child {
+      margin-bottom: 0;
+      letter-spacing: 0.08em;
+      text-align: justify;
+    }
+
+    #about-text .about-contact {
+      padding-top: 1.2em;
+      font-size: 0.85em;
+      letter-spacing: 0.03em;
+      text-align: right;
+    }
+
+    #about-text p.about-contact:last-child {
+      text-align: right;
+      letter-spacing: 0.03em;
+    }
+
+    #about-text .about-contact::before {
+      content: "";
+      display: block;
+      width: 100%;
+      border-top: 1px solid currentColor;
+      opacity: 0.35;
+      margin-bottom: 1.2em;
+    }
+
+    #about-text .about-contact .contact-separator {
+      display: inline-block;
+      margin: 0 0.45em;
+      opacity: 0.5;
+    }
+
+    #about-text .about-contact-label {
+      font-weight: 700;
+    }
+
+    .stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--edge-band) 0;
+      overflow: hidden;
+    }
+
+    .strip-shell {
+      width: calc(100vw - (var(--page-side-margin) * 2));
+      min-height: calc(100vh - (var(--edge-band) * 2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: visible;
+      clip-path: inset(-100vh 0 -100vh 0);
+    }
+
+    .strip-rows {
+      position: relative;
+      width: 100%;
+      height: var(--lateral-tile-size);
+      overflow: visible;
+      cursor: ew-resize;
+      user-select: none;
+    }
+
+    .lateral-track {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      height: 100%;
+      width: max-content;
+      min-width: 100%;
+      overflow: visible;
+    }
+
+    .lateral-row-track {
+      display: flex;
+      align-items: stretch;
+      gap: var(--lateral-gap);
+      height: 100%;
+      width: max-content;
+      overflow: visible;
+      will-change: transform;
+    }
+
+    .lateral-segment {
+      display: flex;
+      align-items: stretch;
+      gap: var(--lateral-gap);
+      height: 100%;
+      width: max-content;
+      flex: none;
+      overflow: visible;
+    }
+
+    .strip-item {
+      position: relative;
+      display: flex;
+      align-items: stretch;
+      flex: 0 0 auto;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: #ecece8;
+      width: var(--item-width, 120px);
+      height: 100%;
+      flex-basis: var(--item-width, 120px);
+      transform-origin: center center;
+      isolation: isolate;
+      will-change: transform;
+      transition: transform 0.55s ease;
+      cursor: pointer;
+    }
+
+    .strip-item img {
+      width: auto;
+      height: 100%;
+      max-width: none;
+      object-fit: contain;
+      object-position: center;
+      filter: grayscale(1) brightness(0.98) contrast(1.02);
+      transform: scale(1.002);
+      transition: filter 0.35s ease;
+    }
+
+    .strip-item:hover img {
+      filter: grayscale(0) brightness(1) contrast(1);
+    }
+
+    .strip-item:focus {
+      outline: none;
+    }
+
+    .strip-item:focus-visible {
+      outline: 1px solid var(--ink);
+      outline-offset: 4px;
+    }
+
+    .hover-title {
+      display: none;
+    }
+
+    #home-lightbox {
+      --lightbox-main-height: 84vh;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.95);
+      color: var(--ink);
+      opacity: 0;
+      cursor: zoom-out;
+      transition: opacity 0.32s ease, background-color 0.42s ease;
+    }
+
+    #home-lightbox.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    #home-lightbox.is-opening {
+      background: rgba(255,255,255,0.95);
+      pointer-events: none;
+    }
+
+    #home-lightbox.is-opening .home-lightbox__track {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    #home-lightbox.is-opening #home-lightbox-close,
+    #home-lightbox.is-opening #home-lightbox-prev,
+    #home-lightbox.is-opening #home-lightbox-next {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .home-lightbox__track {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: center;
+      gap: 2.4rem;
+      width: 100%;
+      max-width: min(94vw, 1800px);
+      padding: 0 8rem;
+      pointer-events: auto;
+      touch-action: pan-y;
+      transform: scale(1);
+      transform-origin: center center;
+      opacity: 1;
+      transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.28s ease;
+    }
+
+    #home-lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      pointer-events: none;
+    }
+
+    .home-lightbox__main {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      justify-self: center;
+      min-width: 0;
+    }
+
+    #home-lightbox-img {
+      width: auto;
+      height: var(--lightbox-main-height);
+      max-width: 84vw;
+      pointer-events: auto;
+      cursor: default;
+      transform: scale(1);
+      transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    #home-lightbox.is-opening #home-lightbox-img {
+      transform: scale(0.992);
+    }
+
+    .home-lightbox__side-image {
+      width: auto;
+      height: var(--lightbox-main-height);
+      max-width: min(26vw, 420px);
+      opacity: 0.42;
+      cursor: pointer;
+      pointer-events: auto;
+      transition: opacity 0.24s ease, transform 0.24s ease;
+    }
+
+    .home-lightbox__side-image:hover {
+      opacity: 0.68;
+      transform: scale(1.01);
+    }
+
+    .home-lightbox__side-image.is-hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #home-lightbox.is-opening .home-lightbox__side-image {
+      opacity: 0;
+      transform: none;
+    }
+
+    #home-lightbox-prev-preview {
+      justify-self: end;
+    }
+
+    #home-lightbox-next-preview {
+      justify-self: start;
+    }
+
+    #home-lightbox-caption {
+      position: absolute;
+      top: calc(100% + 24px);
+      left: 50%;
+      transform: translateX(-50%);
+      width: max-content;
+      max-width: 70vw;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.42em;
+      line-height: 1;
+      text-align: center;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    #home-lightbox-close,
+    #home-lightbox-prev,
+    #home-lightbox-next {
+      position: fixed;
+      z-index: 21;
+      border: 0;
+      padding: 0;
+      background: transparent;
+      color: var(--ink);
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      letter-spacing: 0;
+      cursor: pointer;
+      opacity: 1;
+      transition: opacity 0.18s ease;
+    }
+
+    #home-lightbox-close {
+      top: auto;
+      right: 2rem;
+      bottom: 2rem;
+      line-height: 1;
+    }
+
+    #home-lightbox-prev,
+    #home-lightbox-next {
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 5rem;
+      line-height: 1;
+      padding: 1rem;
+      user-select: none;
+    }
+
+    #home-lightbox-prev {
+      left: 2rem;
+    }
+
+    #home-lightbox-next {
+      right: 2rem;
+    }
+
+    .home-lightbox__zoom-proxy {
+      position: fixed;
+      z-index: 22;
+      margin: 0;
+      object-fit: contain;
+      pointer-events: none;
+      transform-origin: center center;
+      will-change: top, left, width, height;
+      transition:
+        top 0.46s cubic-bezier(0.22, 1, 0.36, 1),
+        left 0.46s cubic-bezier(0.22, 1, 0.36, 1),
+        width 0.46s cubic-bezier(0.22, 1, 0.36, 1),
+        height 0.46s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.18s ease;
+    }
+
+    .home-lightbox__zoom-proxy.is-fading {
+      opacity: 0;
+      transition-delay: 0s, 0s, 0s, 0s, 0.28s;
+    }
+
+    @media (max-width: 960px) {
+      :root {
+        --outer-gutter: 10px;
+        --meta-side-margin: 18px;
+        --page-side-margin: 14px;
+        --edge-band: 40px;
+        --lateral-gap: 0px;
+      }
+
+      .edge-meta__right,
+      .edge-meta__left {
+        gap: 10px;
+      }
+
+      .edge-meta__brand {
+        width: clamp(108px, 20vw, 176px);
+      }
+
+      #home-lightbox {
+        --lightbox-main-height: 58vh;
+      }
+
+      .home-lightbox__track {
+        gap: 1.2rem;
+        padding: 0 4.8rem;
+      }
+
+      .home-lightbox__side-image {
+        max-width: min(26vw, 180px);
+      }
+
+      #home-lightbox-img {
+        max-width: 84vw;
+      }
+    }
+
+    @media (max-width: 640px) {
+      :root {
+        --outer-gutter: 8px;
+        --meta-side-margin: 0px;
+        --page-side-margin: 10px;
+        --meta-size: 11.2px;
+        --edge-band: 82px;
+        --lateral-gap: 0px;
+        --miolo-grid-scale: 0.62;
+      }
+
+      html,
+      body {
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+
+      .edge-meta {
+        mix-blend-mode: normal;
+      }
+
+      .edge-meta--top {
+        grid-template-columns: auto minmax(0, 1fr);
+        grid-template-areas:
+          "brand brand"
+          "left right";
+        row-gap: 6px;
+        align-items: center;
+        padding: 8px var(--outer-gutter) 6px;
+        background: rgba(250, 250, 250, 0.92);
+      }
+
+      .edge-meta--top .edge-meta__left {
+        grid-area: left;
+      }
+
+      .edge-meta--top .edge-meta__center {
+        grid-area: brand;
+      }
+
+      .edge-meta--top .edge-meta__right {
+        grid-area: right;
+        gap: 8px;
+      }
+
+      .edge-meta--top a,
+      .edge-meta--top button {
+        min-height: 32px;
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .edge-meta--bottom {
+        position: static;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 0 var(--outer-gutter) 28px;
+        background: var(--paper);
+      }
+
+      .edge-meta--bottom .edge-meta__left {
+        display: none;
+      }
+
+      .edge-meta--bottom .edge-meta__center {
+        justify-content: flex-start;
+        white-space: normal;
+      }
+
+      .edge-meta--bottom .edge-meta__right {
+        justify-content: flex-end;
+      }
+
+      #about-overlay {
+        align-items: flex-start;
+        justify-content: center;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        padding: calc(var(--edge-band) + 18px) 20px 40px;
+      }
+
+      #about-text {
+        width: min(100%, 34rem);
+        max-width: none;
+        font-size: 1.6rem;
+        line-height: 1.38;
+        text-align: left;
+        letter-spacing: 0;
+      }
+
+      #about-text p:last-child,
+      #about-text p.about-contact:last-child {
+        text-align: left;
+        letter-spacing: 0;
+      }
+
+      #about-text .about-contact {
+        font-size: 1.4rem;
+        text-align: left;
+        overflow-wrap: anywhere;
+      }
+
+      #about-text .about-contact a {
+        display: block;
+        margin-top: 0.35em;
+      }
+
+      #about-text .about-contact .contact-separator {
+        display: none;
+      }
+
+      .edge-meta__bottom-note {
+        max-width: 124px;
+        transform: none;
+      }
+
+      .edge-meta__brand {
+        width: clamp(98px, 28vw, 124px);
+      }
+
+      .stage {
+        height: auto;
+        min-height: 100svh;
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding: var(--edge-band) 0 28px;
+        overflow: visible;
+      }
+
+      .strip-shell {
+        width: calc(100vw - (var(--page-side-margin) * 2));
+        min-height: 0;
+        align-items: flex-start;
+        justify-content: center;
+        clip-path: none;
+      }
+
+      .strip-rows {
+        cursor: default;
+        overflow: visible;
+        width: min(92vw, 520px);
+        height: auto;
+      }
+
+      .lateral-track,
+      .lateral-row-track,
+      .lateral-segment {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .strip-item {
+        width: 100%;
+        height: auto;
+        aspect-ratio: var(--item-ratio, 4 / 5);
+        margin-bottom: 20px;
+      }
+
+      .strip-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      #home-lightbox {
+        --lightbox-main-height: 50vh;
+      }
+
+      .home-lightbox__track {
+        display: grid;
+        grid-template-columns: 1fr;
+        justify-content: center;
+        gap: 0;
+        padding: 0 5.6rem;
+      }
+
+      .home-lightbox__side-image {
+        display: none;
+      }
+
+      #home-lightbox-img {
+        width: auto;
+        height: auto;
+        max-width: calc(100vw - 11.2rem);
+        max-height: 62svh;
+      }
+
+      #home-lightbox-caption {
+        top: calc(100% + 18px);
+        max-width: 86vw;
+        font-size: 11px;
+        letter-spacing: 0.24em;
+      }
+
+      #home-lightbox-prev,
+      #home-lightbox-next,
+      #home-lightbox-close {
+        min-width: 44px;
+        min-height: 44px;
+      }
+
+      #home-lightbox-prev {
+        left: 8px;
+      }
+
+      #home-lightbox-next {
+        right: 8px;
+      }
+
+      #home-lightbox-close {
+        right: 16px;
+        bottom: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="edge-meta edge-meta--top">
+    <nav class="edge-meta__left" aria-label="Navegação institucional">
+      <button id="nav-about-btn" type="button" aria-label="Abrir sobre">about</button>
+      <button id="nav-close-btn" type="button" aria-label="Fechar sobre">close</button>
+    </nav>
+    <div class="edge-meta__center">
+      <a class="edge-meta__home" href="/" aria-label="Ir para a home da Miolo">
+        <img class="edge-meta__brand" src="img/brand/marca-p-clean.svg" alt="miolo">
+      </a>
+    </div>
+    <nav class="edge-meta__right" aria-label="Navegação">
+      <a href="casamentos/">casamentos</a>
+    </nav>
+  </header>
+
+  <main class="stage">
+    <section class="strip-shell" id="acervos" aria-label="Selecao visual da miolo">
+      <div class="strip-rows" id="stripRows"></div>
+    </section>
+    <div class="hover-title" id="hoverTitle" aria-hidden="true"></div>
+  </main>
+
+  <footer class="edge-meta edge-meta--bottom" aria-hidden="true">
+    <div class="edge-meta__left"></div>
+    <div class="edge-meta__center">salvador · bh · sp · rio · floripa</div>
+    <div class="edge-meta__right">
+      <span class="edge-meta__bottom-note">explore.<br>conteudo, imagem<br>e presenca.</span>
+    </div>
+  </footer>
+
+  <div id="about-overlay" role="dialog" aria-modal="true" aria-label="Sobre">
+    <div id="about-text">
+      <p>sem verdade, não há foto.</p>
+      <p>entendemos que a fotografia não registra o amor porque ela mora na superfície; ao contrário do amor que vive no íntimo. e lá não se entra. então nosso papel é de registrar signos que representam o que nós não alcançaremos.</p>
+      <p>diante disso, trabalhamos com uma linguagem que sustenta o registro desromantizado do casamento, buscando sempre respeitar o que mora no íntimo e reservando isso somente para o casal. o que vocês sentem diz a respeito somente a vocês! é desromantico, é distanciado e é honesto.</p>
+      <p>não acreditamos em casamentos com formatos megalomaníacos regados a roteiros e protocolos. não achamos que contos de fadas existam e quanto a príncipes e princesas, até acredito que existam; mas que fiquem restritos a monarquia. aqui preferimos pessoas reais, palpáveis, vivas e que respiram. e que transpiram e que vivem da forma que acham que devam viver.</p>
+    </div>
+  </div>
+
+  <div id="home-lightbox" role="dialog" aria-modal="true" aria-label="Galeria de ensaio">
+    <button id="home-lightbox-close" type="button" aria-label="Fechar galeria">close</button>
+    <button id="home-lightbox-prev" type="button" aria-label="Imagem anterior">‹</button>
+    <div class="home-lightbox__track" id="home-lightbox-track">
+      <img id="home-lightbox-prev-preview" class="home-lightbox__side-image" src="" alt="" aria-hidden="true">
+      <div class="home-lightbox__main">
+        <img id="home-lightbox-img" src="" alt="">
+        <div id="home-lightbox-caption" aria-hidden="true"></div>
+      </div>
+      <img id="home-lightbox-next-preview" class="home-lightbox__side-image" src="" alt="" aria-hidden="true">
+    </div>
+    <button id="home-lightbox-next" type="button" aria-label="Próxima imagem">›</button>
+  </div>
+
+  <script>
+    (() => {
+      const stripRows = document.getElementById('stripRows');
+      const hoverTitle = document.getElementById('hoverTitle');
+      const homeLightbox = document.getElementById('home-lightbox');
+      const lightboxTrack = document.getElementById('home-lightbox-track');
+      const lightboxImage = document.getElementById('home-lightbox-img');
+      const lightboxCaption = document.getElementById('home-lightbox-caption');
+      const lightboxPrevPreview = document.getElementById('home-lightbox-prev-preview');
+      const lightboxNextPreview = document.getElementById('home-lightbox-next-preview');
+      const lightboxClose = document.getElementById('home-lightbox-close');
+      const lightboxPrev = document.getElementById('home-lightbox-prev');
+      const lightboxNext = document.getElementById('home-lightbox-next');
+      const aboutOverlay = document.getElementById('about-overlay');
+      const btnAbout = document.getElementById('nav-about-btn');
+      const btnClose = document.getElementById('nav-close-btn');
+
+      const stripImages = [
+        'img/pagina-inicial/0014aea8-f649-4b10-91bf-f3790f0f9dad__DSC7817-Editar.webp',
+        'img/pagina-inicial/0d083155-d10c-4df0-a29b-0f66c1547fd4__20180922_-_Mel_e_Tiago_-_181.webp',
+        'img/pagina-inicial/174497a7-3525-413f-bb6b-b0e074670d4f__site2.webp',
+        'img/pagina-inicial/38fec57b-3773-4084-88a7-14b8e6b24963__03.webp',
+        'img/pagina-inicial/4105bd11-8cb3-4517-9b92-9aa871abb62a__20171022_-_Bianca_e_Felipe_22_.webp',
+        'img/pagina-inicial/444a7923-5305-4851-b15e-286d805cf9ee__20171013_-_Pro_Image_800_MARIANA.webp',
+        'img/pagina-inicial/470e4355-3f8c-4c4d-a94b-c8c503117ef0__08.webp',
+        'img/pagina-inicial/4f9e9b1b-b58b-47cb-99aa-026ff114ee60__20171021_-_Gabriel_e_Daniela_-_245.webp',
+        'img/pagina-inicial/9713b591-9f73-4330-ab86-7ac4f8be8928__20171002_-_Pro_Image_800_-_032.webp',
+        'img/pagina-inicial/9eeffaea-d0b6-4482-b1d9-c56745bf6a1f__DSC4802-Editar.webp',
+        'img/pagina-inicial/a489a022-b8c9-4dce-a355-4f94b85049d5__04.webp',
+        'img/pagina-inicial/aac63c42-2298-4ccf-9b95-1109161f4ba5__20181013_-_Bruno_e_Caro_-_093.webp',
+        'img/pagina-inicial/ad976005-e174-4ac6-9f65-8f1c4d21ad51__site3.webp',
+        'img/pagina-inicial/c2ea7135-1d93-4570-a96d-b20c1b4d389b__site.webp',
+        'img/pagina-inicial/cbaac32f-96a3-4004-bf58-f01ac23a72d0__14.webp',
+        'img/pagina-inicial/d0004ae7-faa5-48a3-8af7-dd2a5826a389__site09.webp',
+        'img/pagina-inicial/ec5f79e9-9436-43b6-b05d-b4f32ea40ff9__DSC7645-Editar.webp',
+        'img/pagina-inicial/f92e8f54-ecbc-42d7-a28a-0f4b12606be8__20181013_-_Bruno_e_Caro_-_090.webp'
+      ];
+
+      const imageTitles = {
+        '0014aea8-f649-4b10-91bf-f3790f0f9dad__DSC7817-Editar.webp': 'dsc 7817',
+        '0d083155-d10c-4df0-a29b-0f66c1547fd4__20180922_-_Mel_e_Tiago_-_181.webp': 'mel e tiago',
+        '174497a7-3525-413f-bb6b-b0e074670d4f__site2.webp': 'site 2',
+        '38fec57b-3773-4084-88a7-14b8e6b24963__03.webp': '03',
+        '4105bd11-8cb3-4517-9b92-9aa871abb62a__20171022_-_Bianca_e_Felipe_22_.webp': 'bianca e felipe',
+        '444a7923-5305-4851-b15e-286d805cf9ee__20171013_-_Pro_Image_800_MARIANA.webp': 'mariana',
+        '470e4355-3f8c-4c4d-a94b-c8c503117ef0__08.webp': '08',
+        '4f9e9b1b-b58b-47cb-99aa-026ff114ee60__20171021_-_Gabriel_e_Daniela_-_245.webp': 'gabriel e daniela',
+        '9713b591-9f73-4330-ab86-7ac4f8be8928__20171002_-_Pro_Image_800_-_032.webp': 'pro image 032',
+        '9eeffaea-d0b6-4482-b1d9-c56745bf6a1f__DSC4802-Editar.webp': 'dsc 4802',
+        'a489a022-b8c9-4dce-a355-4f94b85049d5__04.webp': '04',
+        'aac63c42-2298-4ccf-9b95-1109161f4ba5__20181013_-_Bruno_e_Caro_-_093.webp': 'bruno e caro 093',
+        'ad976005-e174-4ac6-9f65-8f1c4d21ad51__site3.webp': 'site 3',
+        'c2ea7135-1d93-4570-a96d-b20c1b4d389b__site.webp': 'site',
+        'cbaac32f-96a3-4004-bf58-f01ac23a72d0__14.webp': '14',
+        'd0004ae7-faa5-48a3-8af7-dd2a5826a389__site09.webp': 'site 09',
+        'ec5f79e9-9436-43b6-b05d-b4f32ea40ff9__DSC7645-Editar.webp': 'dsc 7645',
+        'f92e8f54-ecbc-42d7-a28a-0f4b12606be8__20181013_-_Bruno_e_Caro_-_090.webp': 'bruno e caro 090'
+      };
+
+      const gapValue = () => {
+        const value = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--lateral-gap'));
+        return Number.isFinite(value) ? value : 2;
+      };
+      let imageMeta = [];
+      let lastLayoutKey = '';
+      let lateralAnimationFrame = null;
+      let lateralVelocity = 0;
+      let lateralSegmentWidths = [];
+      let lateralOffsets = [];
+      let lateralRowTracks = [];
+      let lateralLoopBaseSegment = 4;
+      let isHoveringItem = false;
+      let activeGalleryImages = [];
+      let activeGalleryTitle = '';
+      let activeGalleryIndex = 0;
+      let lightboxTouchStartX = 0;
+      let lightboxTouchStartY = 0;
+      let lightboxProxy = null;
+      let lightboxOpeningToken = 0;
+
+      function getImageFileName(src) {
+        return src.split('/').pop();
+      }
+
+      function getImageTitle(src) {
+        const fileName = getImageFileName(src);
+        return imageTitles[fileName] || '';
+      }
+
+      function hideHoverTitle() {
+        if (!hoverTitle) return;
+      }
+
+      function openAbout() {
+        if (!aboutOverlay || !btnAbout || !btnClose) return;
+
+        hideHoverTitle();
+        isHoveringItem = false;
+        lateralVelocity = 0;
+        stopLateralScrollLoop();
+        resetCenteredHover();
+        aboutOverlay.classList.add('active');
+        btnAbout.style.display = 'none';
+        btnClose.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeAbout() {
+        if (!aboutOverlay || !btnAbout || !btnClose) return;
+
+        aboutOverlay.classList.remove('active');
+        btnAbout.style.display = 'block';
+        btnClose.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+
+      function isAboutActive() {
+        return aboutOverlay?.classList.contains('active');
+      }
+
+      function isLightboxActive() {
+        return homeLightbox?.classList.contains('active');
+      }
+
+      function getGalleryForItem(item) {
+        const src = item.dataset.imageSrc || '';
+        return src ? [src] : [];
+      }
+
+      function getGalleryTitleForItem() {
+        return '';
+      }
+
+      function getGalleryStartIndex() {
+        return 0;
+      }
+
+      function getWrappedGalleryIndex(index) {
+        if (!activeGalleryImages.length) return 0;
+        return (index + activeGalleryImages.length) % activeGalleryImages.length;
+      }
+
+      function updateLightboxPreview(image, index) {
+        if (!image) return;
+
+        if (activeGalleryImages.length <= 1) {
+          image.classList.add('is-hidden');
+          image.removeAttribute('src');
+          return;
+        }
+
+        image.src = activeGalleryImages[getWrappedGalleryIndex(index)];
+        image.alt = '';
+        image.classList.remove('is-hidden');
+      }
+
+      function updateLightboxImage() {
+        if (!lightboxImage || !activeGalleryImages.length) return;
+
+        const src = activeGalleryImages[getWrappedGalleryIndex(activeGalleryIndex)];
+        lightboxImage.src = src;
+        lightboxImage.alt = activeGalleryTitle || 'Imagem da galeria';
+
+        if (lightboxCaption) {
+          lightboxCaption.textContent = activeGalleryTitle.toLocaleUpperCase('pt-BR');
+          lightboxCaption.hidden = !activeGalleryTitle;
+        }
+
+        updateLightboxPreview(lightboxPrevPreview, activeGalleryIndex - 1);
+        updateLightboxPreview(lightboxNextPreview, activeGalleryIndex + 1);
+      }
+
+      function removeLightboxProxy() {
+        if (!lightboxProxy) return;
+        lightboxProxy.remove();
+        lightboxProxy = null;
+      }
+
+      function getLightboxTargetRect(sourceImage, initialRect) {
+        const measuredRect = lightboxImage?.getBoundingClientRect();
+        if (measuredRect?.width && measuredRect?.height) return measuredRect;
+
+        const overlayRect = homeLightbox?.getBoundingClientRect();
+        const ratio = (lightboxImage?.naturalWidth && lightboxImage?.naturalHeight)
+          ? lightboxImage.naturalWidth / lightboxImage.naturalHeight
+          : (sourceImage?.naturalWidth && sourceImage?.naturalHeight)
+            ? sourceImage.naturalWidth / sourceImage.naturalHeight
+            : initialRect.width / initialRect.height;
+        const maxWidth = window.innerWidth * 0.84;
+        const maxHeight = window.innerHeight * 0.84;
+        let width = maxHeight * ratio;
+        let height = maxHeight;
+
+        if (width > maxWidth) {
+          width = maxWidth;
+          height = width / ratio;
+        }
+
+        return {
+          top: (overlayRect?.top || 0) + (((overlayRect?.height || window.innerHeight) - height) / 2),
+          left: (overlayRect?.left || 0) + (((overlayRect?.width || window.innerWidth) - width) / 2),
+          width,
+          height
+        };
+      }
+
+      function finishLightboxOpening() {
+        homeLightbox?.classList.remove('is-opening');
+
+        if (!lightboxProxy) return;
+        const proxy = lightboxProxy;
+        lightboxProxy = null;
+
+        proxy.addEventListener('transitionend', (event) => {
+          if (event.target === proxy && event.propertyName === 'opacity') proxy.remove();
+        });
+        proxy.classList.add('is-fading');
+        window.setTimeout(() => proxy.remove(), 900);
+      }
+
+      function animateLightboxOpen(item, sourceRect, sourceSrc) {
+        if (!homeLightbox || !lightboxImage) return;
+
+        removeLightboxProxy();
+        const sourceImage = item.querySelector('img');
+        const initialRect = sourceRect || sourceImage?.getBoundingClientRect();
+
+        if (!sourceImage || !initialRect?.width || !initialRect?.height) {
+          finishLightboxOpening();
+          return;
+        }
+
+        const proxy = document.createElement('img');
+        proxy.className = 'home-lightbox__zoom-proxy';
+        proxy.src = sourceSrc || sourceImage.currentSrc || sourceImage.src;
+        proxy.alt = '';
+        proxy.style.top = `${initialRect.top}px`;
+        proxy.style.left = `${initialRect.left}px`;
+        proxy.style.width = `${initialRect.width}px`;
+        proxy.style.height = `${initialRect.height}px`;
+        document.body.appendChild(proxy);
+        lightboxProxy = proxy;
+        proxy.getBoundingClientRect();
+
+        const moveProxyToLightbox = () => {
+          const targetRect = getLightboxTargetRect(sourceImage, initialRect);
+
+          if (!targetRect.width || !targetRect.height) {
+            finishLightboxOpening();
+            return;
+          }
+
+          let finished = false;
+          const finishOnce = () => {
+            if (finished) return;
+            finished = true;
+            finishLightboxOpening();
+          };
+
+          proxy.style.top = `${targetRect.top}px`;
+          proxy.style.left = `${targetRect.left}px`;
+          proxy.style.width = `${targetRect.width}px`;
+          proxy.style.height = `${targetRect.height}px`;
+
+          finishOnce();
+        };
+
+        moveProxyToLightbox();
+      }
+
+      function openLightbox(item) {
+        if (!homeLightbox || !item) return;
+
+        const gallery = getGalleryForItem(item);
+        if (!gallery.length) return;
+
+        const openingToken = lightboxOpeningToken + 1;
+        lightboxOpeningToken = openingToken;
+        const sourceImage = item.querySelector('img');
+        const sourceRect = sourceImage?.getBoundingClientRect();
+        const sourceSrc = sourceImage?.currentSrc || sourceImage?.src || '';
+
+        activeGalleryImages = gallery;
+        activeGalleryTitle = getGalleryTitleForItem(item);
+        activeGalleryIndex = getGalleryStartIndex(item, gallery);
+
+        hideHoverTitle();
+        updateLightboxImage();
+        homeLightbox.classList.add('active', 'is-opening');
+        document.body.style.overflow = 'hidden';
+
+        isHoveringItem = false;
+        lateralVelocity = 0;
+        stopLateralScrollLoop();
+        resetCenteredHover();
+
+        if (openingToken === lightboxOpeningToken && isLightboxActive()) {
+          animateLightboxOpen(item, sourceRect, sourceSrc);
+        }
+      }
+
+      function closeLightbox() {
+        if (!homeLightbox) return;
+        lightboxOpeningToken += 1;
+        removeLightboxProxy();
+        homeLightbox.classList.remove('is-opening');
+        homeLightbox.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      function moveLightbox(delta) {
+        if (homeLightbox?.classList.contains('is-opening')) return;
+        if (!activeGalleryImages.length) return;
+        activeGalleryIndex = getWrappedGalleryIndex(activeGalleryIndex + delta);
+        updateLightboxImage();
+      }
+
+      function getItemLayoutRect(item) {
+        const rowTrack = item.closest('.lateral-row-track');
+        if (!rowTrack) return item.getBoundingClientRect();
+
+        const stripRect = stripRows.getBoundingClientRect();
+        const rowMatrix = new DOMMatrixReadOnly(getComputedStyle(rowTrack).transform);
+        return {
+          left: stripRect.left + rowTrack.offsetLeft + rowMatrix.m41 + item.offsetLeft,
+          top: stripRect.top + rowTrack.offsetTop + rowMatrix.m42 + item.offsetTop,
+          width: item.offsetWidth,
+          height: item.offsetHeight
+        };
+      }
+
+      function showHoverTitle(item, metrics = null) {
+        return;
+      }
+
+      function shuffle(items) {
+        const copy = items.slice();
+        for (let index = copy.length - 1; index > 0; index -= 1) {
+          const randomIndex = Math.floor(Math.random() * (index + 1));
+          [copy[index], copy[randomIndex]] = [copy[randomIndex], copy[index]];
+        }
+        return copy;
+      }
+
+      function loadMeta(src) {
+        return new Promise((resolve, reject) => {
+          const image = new Image();
+          image.onload = () => resolve({
+            src,
+            width: image.naturalWidth,
+            height: image.naturalHeight,
+            ratio: image.naturalWidth / image.naturalHeight
+          });
+          image.onerror = reject;
+          image.src = src;
+        });
+      }
+
+      async function ensureMeta() {
+        if (imageMeta.length) return imageMeta;
+        imageMeta = stripImages.map((src) => ({
+          src,
+          width: 1,
+          height: 1,
+          ratio: 1
+        }));
+        return imageMeta;
+      }
+
+      function getConfig() {
+        if (window.innerWidth <= 640) {
+          return { mobile: true };
+        }
+
+        return { mobile: false, segmentCopies: 9 };
+      }
+
+      function resetLateralState() {
+        if (lateralAnimationFrame) {
+          cancelAnimationFrame(lateralAnimationFrame);
+          lateralAnimationFrame = null;
+        }
+        lateralVelocity = 0;
+        lateralSegmentWidths = [];
+        lateralOffsets = [];
+        lateralRowTracks = [];
+      }
+
+      function createStripItem(imageData, index) {
+        const figure = document.createElement('figure');
+        const image = document.createElement('img');
+
+        const tileHeight = stripRows.getBoundingClientRect().height || window.innerHeight * 0.25;
+
+        figure.className = 'strip-item';
+        figure.style.setProperty('--item-width', `${imageData.ratio * tileHeight}px`);
+        figure.dataset.imageSrc = imageData.src;
+        figure.tabIndex = 0;
+        figure.setAttribute('role', 'button');
+        figure.setAttribute('aria-label', 'Abrir imagem');
+        image.src = imageData.src;
+        image.alt = '';
+        image.loading = index < 8 ? 'eager' : 'lazy';
+        image.decoding = 'async';
+
+        const updateItemWidth = () => {
+          if (!image.naturalWidth || !image.naturalHeight) return;
+          const currentHeight = figure.getBoundingClientRect().height || tileHeight;
+          const ratio = image.naturalWidth / image.naturalHeight;
+          if (!Number.isFinite(ratio) || !currentHeight) return;
+          figure.style.setProperty('--item-ratio', `${image.naturalWidth} / ${image.naturalHeight}`);
+          figure.style.setProperty('--item-width', `${ratio * currentHeight}px`);
+          if (window.innerWidth > 640) requestAnimationFrame(measureLateralSegments);
+        };
+
+        if (image.complete) {
+          updateItemWidth();
+        } else {
+          image.addEventListener('load', updateItemWidth, { once: true });
+        }
+
+        figure.appendChild(image);
+        figure.addEventListener('click', () => openLightbox(figure));
+        figure.addEventListener('keydown', (event) => {
+          if (event.key !== 'Enter' && event.key !== ' ') return;
+          event.preventDefault();
+          openLightbox(figure);
+        });
+        return figure;
+      }
+
+      function measureLateralSegments() {
+        if (window.innerWidth <= 640) return;
+
+        lateralRowTracks = Array.from(stripRows.querySelectorAll('.lateral-row-track'));
+        lateralSegmentWidths = lateralRowTracks.map((rowTrack) => {
+          const segments = rowTrack.querySelectorAll('.lateral-segment');
+          if (segments.length < 2) return 0;
+          return segments[1].offsetLeft - segments[0].offsetLeft;
+        });
+        lateralOffsets = lateralSegmentWidths.map((width, index) => {
+          const currentOffset = lateralOffsets[index];
+          return Number.isFinite(currentOffset) ? currentOffset : 0;
+        });
+        updateLateralTrackPosition();
+      }
+
+      function updateLateralTrackPosition() {
+        lateralRowTracks.forEach((rowTrack, index) => {
+          const segmentWidth = lateralSegmentWidths[index];
+          if (!segmentWidth) return;
+          const offset = lateralOffsets[index] || 0;
+          const wrappedOffset = ((offset % segmentWidth) + segmentWidth) % segmentWidth;
+          rowTrack.style.transform = `translate3d(${-(segmentWidth * lateralLoopBaseSegment) - wrappedOffset}px, 0, 0)`;
+        });
+      }
+
+      function runLateralScrollLoop() {
+        if (lateralAnimationFrame || window.innerWidth <= 640) return;
+
+        const step = () => {
+          if (Math.abs(lateralVelocity) < 0.05 || !lateralSegmentWidths.length) {
+            lateralAnimationFrame = null;
+            return;
+          }
+
+          lateralOffsets = lateralOffsets.map((offset) => offset + lateralVelocity);
+          updateLateralTrackPosition();
+          lateralAnimationFrame = requestAnimationFrame(step);
+        };
+
+        lateralAnimationFrame = requestAnimationFrame(step);
+      }
+
+      function stopLateralScrollLoop() {
+        if (!lateralAnimationFrame) return;
+        cancelAnimationFrame(lateralAnimationFrame);
+        lateralAnimationFrame = null;
+      }
+
+      function resetCenteredHover(rowTrack) {
+        const scope = rowTrack || stripRows;
+        scope.querySelectorAll('.strip-item').forEach((item) => {
+          item.style.transform = '';
+          item.style.zIndex = '';
+        });
+      }
+
+      function applyCenteredHover(item) {
+        const rowTrack = item.closest('.lateral-row-track');
+        if (!rowTrack) return;
+
+        const items = Array.from(rowTrack.querySelectorAll('.strip-item'));
+        const hoveredIndex = items.indexOf(item);
+        if (hoveredIndex === -1) return;
+
+        resetCenteredHover(rowTrack);
+
+        const hoverScale = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hover-scale')) || 1.5;
+        const itemRect = getItemLayoutRect(item);
+        const itemWidth = itemRect.width;
+        const offset = (itemWidth * (hoverScale - 1)) / 2;
+
+        items.forEach((currentItem, index) => {
+          if (index < hoveredIndex) {
+            currentItem.style.transform = `translate3d(${-offset}px, 0, 0)`;
+            currentItem.style.zIndex = '1';
+          } else if (index > hoveredIndex) {
+            currentItem.style.transform = `translate3d(${offset}px, 0, 0)`;
+            currentItem.style.zIndex = '1';
+          } else {
+            currentItem.style.transform = `scale(${hoverScale})`;
+            currentItem.style.zIndex = '3';
+          }
+        });
+
+        showHoverTitle(item, itemRect);
+      }
+
+      function bindCenteredHover() {
+        stripRows.querySelectorAll('.strip-item').forEach((item) => {
+          if (item.dataset.hoverBound === 'true') return;
+
+          item.addEventListener('mouseenter', () => {
+            if (window.innerWidth <= 640) return;
+            if (isAboutActive()) return;
+            if (isLightboxActive()) return;
+            isHoveringItem = true;
+            lateralVelocity = 0;
+            stopLateralScrollLoop();
+            applyCenteredHover(item);
+          });
+
+          item.addEventListener('mouseleave', () => {
+            if (window.innerWidth <= 640) return;
+            isHoveringItem = false;
+            const rowTrack = item.closest('.lateral-row-track');
+            resetCenteredHover(rowTrack);
+            hideHoverTitle();
+          });
+
+          item.dataset.hoverBound = 'true';
+        });
+      }
+
+      function handleLateralMouseMove(event) {
+        if (window.innerWidth <= 640) return;
+        if (isAboutActive()) return;
+        if (isLightboxActive()) return;
+        if (isHoveringItem) return;
+        const zoneWidth = Math.max(140, window.innerWidth * 0.16);
+        const maxSpeed = 32;
+        let velocity = 0;
+
+        if (event.clientX < zoneWidth) {
+          const strength = 1 - (event.clientX / zoneWidth);
+          velocity = -maxSpeed * strength;
+        } else if (event.clientX > window.innerWidth - zoneWidth) {
+          const strength = 1 - ((window.innerWidth - event.clientX) / zoneWidth);
+          velocity = maxSpeed * strength;
+        }
+
+        lateralVelocity = velocity;
+
+        if (velocity === 0) {
+          stopLateralScrollLoop();
+          return;
+        }
+
+        runLateralScrollLoop();
+      }
+
+      function handleLateralMouseLeave() {
+        isHoveringItem = false;
+        resetCenteredHover();
+        hideHoverTitle();
+        lateralVelocity = 0;
+        stopLateralScrollLoop();
+      }
+
+      function bindLateralScroll() {
+        document.removeEventListener('mousemove', handleLateralMouseMove);
+        document.removeEventListener('mouseleave', handleLateralMouseLeave);
+
+        if (window.innerWidth <= 640) {
+          lateralVelocity = 0;
+          stopLateralScrollLoop();
+          return;
+        }
+
+        document.addEventListener('mousemove', handleLateralMouseMove);
+        document.addEventListener('mouseleave', handleLateralMouseLeave);
+      }
+
+      function bindAboutControls() {
+        if (!aboutOverlay || !btnAbout || !btnClose) return;
+
+        btnAbout.addEventListener('click', openAbout);
+        btnClose.addEventListener('click', closeAbout);
+        aboutOverlay.addEventListener('click', (event) => {
+          if (event.target === aboutOverlay) closeAbout();
+        });
+      }
+
+      function bindLightboxControls() {
+        if (!homeLightbox) return;
+
+        lightboxClose?.addEventListener('click', closeLightbox);
+        lightboxPrev?.addEventListener('click', () => moveLightbox(-1));
+        lightboxNext?.addEventListener('click', () => moveLightbox(1));
+        lightboxPrevPreview?.addEventListener('click', () => moveLightbox(-1));
+        lightboxNextPreview?.addEventListener('click', () => moveLightbox(1));
+
+        homeLightbox.addEventListener('click', (event) => {
+          if (event.target === homeLightbox) closeLightbox();
+        });
+
+        lightboxTrack?.addEventListener('touchstart', (event) => {
+          const touch = event.touches[0];
+          lightboxTouchStartX = touch.clientX;
+          lightboxTouchStartY = touch.clientY;
+        }, { passive: true });
+
+        lightboxTrack?.addEventListener('touchend', (event) => {
+          const touch = event.changedTouches[0];
+          const deltaX = touch.clientX - lightboxTouchStartX;
+          const deltaY = touch.clientY - lightboxTouchStartY;
+
+          if (Math.abs(deltaX) < 40 || Math.abs(deltaX) < Math.abs(deltaY)) return;
+          moveLightbox(deltaX < 0 ? 1 : -1);
+        }, { passive: true });
+
+        document.addEventListener('keydown', (event) => {
+          if (isAboutActive() && event.key === 'Escape') {
+            closeAbout();
+            return;
+          }
+
+          if (!isLightboxActive()) return;
+
+          if (event.key === 'Escape') {
+            closeLightbox();
+          } else if (event.key === 'ArrowLeft') {
+            moveLightbox(-1);
+          } else if (event.key === 'ArrowRight') {
+            moveLightbox(1);
+          }
+        });
+      }
+
+      async function renderStrip() {
+        const config = getConfig();
+        const layoutKey = `${window.innerWidth}x${window.innerHeight}:${config.mobile ? 'mobile' : 'lateral'}`;
+        const meta = await ensureMeta();
+        const visibleItems = shuffle(meta);
+        const fragment = document.createDocumentFragment();
+        resetLateralState();
+        stripRows.innerHTML = '';
+
+        if (config.mobile) {
+          visibleItems.forEach((imageData, index) => {
+            fragment.appendChild(createStripItem(imageData, index));
+          });
+          stripRows.appendChild(fragment);
+          bindLateralScroll();
+          lastLayoutKey = layoutKey;
+          return;
+        }
+
+        const lateralTrack = document.createElement('div');
+        lateralTrack.className = 'lateral-track';
+        const rowTrack = document.createElement('div');
+        rowTrack.className = 'lateral-row-track';
+
+        for (let segment = 0; segment < config.segmentCopies; segment += 1) {
+          const segmentEl = document.createElement('div');
+          segmentEl.className = 'lateral-segment';
+
+          visibleItems.forEach((imageData, index) => {
+            const clone = createStripItem(imageData, index);
+            clone.dataset.loopSegment = String(segment);
+            clone.dataset.loopRow = '0';
+            const cloneImage = clone.querySelector('img');
+            if (cloneImage) {
+              cloneImage.loading = 'eager';
+              cloneImage.addEventListener('load', measureLateralSegments, { once: true });
+              cloneImage.addEventListener('error', measureLateralSegments, { once: true });
+            }
+            segmentEl.appendChild(clone);
+          });
+
+          rowTrack.appendChild(segmentEl);
+        }
+
+        lateralTrack.appendChild(rowTrack);
+        fragment.appendChild(lateralTrack);
+
+        stripRows.appendChild(fragment);
+        requestAnimationFrame(() => {
+          requestAnimationFrame(measureLateralSegments);
+        });
+        bindLateralScroll();
+        bindCenteredHover();
+        lastLayoutKey = layoutKey;
+      }
+
+      let resizeFrame = 0;
+
+      function handleResize() {
+        cancelAnimationFrame(resizeFrame);
+        resizeFrame = requestAnimationFrame(() => {
+          const config = getConfig();
+          const nextLayoutKey = `${window.innerWidth}x${window.innerHeight}:${config.mobile ? 'mobile' : 'lateral'}`;
+          if (nextLayoutKey === lastLayoutKey) return;
+          renderStrip();
+        });
+      }
+
+      bindAboutControls();
+      bindLightboxControls();
+      renderStrip();
+      window.addEventListener('resize', handleResize);
+    })();
+  </script>
+</body>
+</html>
