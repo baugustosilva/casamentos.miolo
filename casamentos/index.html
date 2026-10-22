@@ -265,7 +265,14 @@
       align-items: center;
       justify-content: center;
       padding: var(--edge-band) var(--page-side-margin);
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: none;
+    }
+
+    #blog-wrap::-webkit-scrollbar {
+      display: none;
     }
 
     .post-grid {
@@ -277,6 +284,7 @@
       max-width: 100%;
       align-content: center;
       justify-items: stretch;
+      margin: auto 0;
     }
 
     .post-card {
@@ -592,6 +600,12 @@
 
     <main id="blog-wrap" aria-label="MIOLO — Casamentos">
       <section class="post-grid" aria-label="posts">
+      <a class="post-card" href="posts/ale-mah/">
+        <div class="post-image">
+          <img src="img/posts/ale-mah/001.webp" alt="" loading="lazy" decoding="async">
+        </div>
+        <h2 class="post-title">{ale bigliazzi + mah}</h2>
+      </a>
       <a class="post-card" href="posts/bianca-felipe/">
         <div class="post-image">
           <img src="img/posts/bianca-felipe/001__1300_16343750-95e0-4f47-a3cf-f8725d437757.webp" alt="" loading="lazy" decoding="async">
