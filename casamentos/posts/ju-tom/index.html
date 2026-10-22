@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index,follow">
+  <title>julia ramil + tom</title>
+  <meta name="description" content="julia ramil + tom">
+  <link rel="icon" type="image/svg+xml" href="../../../img/brand/miolo-favicon.svg">
+  <link rel="preconnect" href="https://type.cargo.site" crossorigin>
+  <style>
+    @font-face {
+      font-display: block;
+      font-family: "Monument Grotesk Variable";
+      src: url("https://type.cargo.site/files/CargoMonumentGroteskPlusVariable.woff2") format("woff2-variations"),
+           url("https://type.cargo.site/files/CargoMonumentGroteskPlusVariable.woff") format("woff");
+      font-style: normal;
+      font-weight: 200 1000;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html {
+      font-size: 62.5%;
+      margin: 0;
+      padding: 0;
+      letter-spacing: 0.03em;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+    }
+
+    :root {
+      --paper: #fafafa;
+      --ink: #1d1d1b;
+      --brand-color: #1d1d1b;
+      --site-gutter-left: 8rem;
+      --site-gutter-right: 8rem;
+      --outer-gutter: 12px;
+      --meta-side-margin: 38px;
+      --meta-size: 12.6px;
+      --meta-track: 0.08em;
+      --edge-band: 42px;
+      --post-gallery-width: min(54vw, 82rem);
+      --post-text-gap: 3.2rem;
+      --post-text-width: clamp(14rem, calc(50vw - (var(--post-gallery-width) / 2) - var(--site-gutter-left) - var(--post-text-gap)), 32rem);
+    }
+
+    body {
+      --brand-color: #000000;
+      --site-gutter-left: 8rem;
+      --site-gutter-right: 8rem;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background-color: rgba(255, 255, 255, 0.72);
+      color: var(--brand-color);
+      font-family: "Monument Grotesk Variable", -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      font-variation-settings: "slnt" 0, "MONO" 0;
+      overflow-x: hidden;
+    }
+
+    @media (min-width: 641px) {
+      html,
+      body {
+        height: 100%;
+        overflow: hidden;
+      }
+    }
+
+    img {
+      border: 0;
+      padding: 0;
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .edge-meta {
+      position: fixed;
+      left: 0;
+      right: 0;
+      z-index: 3;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: flex-start;
+      padding: 12px calc(var(--outer-gutter) + var(--meta-side-margin));
+      font-size: var(--meta-size);
+      font-weight: 700;
+      letter-spacing: var(--meta-track);
+      text-transform: uppercase;
+      line-height: 1;
+      color: var(--ink);
+      pointer-events: none;
+      mix-blend-mode: multiply;
+    }
+
+    .edge-meta a,
+    .edge-meta button {
+      pointer-events: auto;
+    }
+
+    .edge-meta--top {
+      top: 0;
+      align-items: center;
+      z-index: 200;
+    }
+
+    .edge-meta--bottom {
+      bottom: 0;
+      align-items: flex-end;
+      z-index: 3;
+    }
+
+    .edge-meta__center,
+    .edge-meta__right,
+    .edge-meta__left {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .edge-meta__center {
+      justify-content: center;
+      justify-self: center;
+    }
+
+    .edge-meta__left {
+      justify-self: start;
+    }
+
+    .edge-meta__right {
+      justify-self: end;
+    }
+
+    .edge-meta__home {
+      display: block;
+      pointer-events: auto;
+    }
+
+    .edge-meta__brand {
+      width: clamp(116px, 15vw, 210px);
+      height: auto;
+      filter: brightness(0) saturate(100%);
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .edge-meta__left,
+    .edge-meta__right {
+      flex: 0 0 auto;
+    }
+
+    .edge-meta__bottom-note {
+      max-width: 180px;
+      white-space: normal;
+      line-height: 1.16;
+      text-align: left;
+      transform: translateX(-58px);
+    }
+
+    #nav-about-btn,
+    #nav-close-btn {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      letter-spacing: inherit;
+      line-height: 1;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    #nav-close-btn {
+      display: none;
+    }
+
+    #about-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 150;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    #about-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #about-text {
+      max-width: 800px;
+      width: calc(100% - var(--site-gutter-left) - var(--site-gutter-right));
+      text-align: justify;
+      font-family: Helvetica;
+      font-size: 2rem;
+      font-weight: 500;
+      line-height: 1.24;
+      color: var(--brand-color);
+      letter-spacing: 0.01em;
+      text-transform: lowercase;
+    }
+
+    #about-text p {
+      margin: 0 0 1.45em 0;
+    }
+
+    #about-text p:last-child {
+      margin-bottom: 0;
+      letter-spacing: 0.08em;
+      text-align: justify;
+    }
+
+    #about-text .about-contact {
+      padding-top: 1.2em;
+      font-size: 0.85em;
+      letter-spacing: 0.03em;
+      text-align: right;
+    }
+
+    #about-text p.about-contact:last-child {
+      text-align: right;
+      letter-spacing: 0.03em;
+    }
+
+    #about-text .about-contact::before {
+      content: "";
+      display: block;
+      width: 100%;
+      border-top: 1px solid currentColor;
+      opacity: 0.35;
+      margin-bottom: 1.2em;
+    }
+
+    #about-text .about-contact .contact-separator {
+      display: inline-block;
+      margin: 0 0.45em;
+      opacity: 0.5;
+    }
+
+    #about-text .about-contact-label {
+      font-weight: 700;
+    }
+
+    #post-wrap {
+      position: fixed;
+      inset: 0;
+      padding: calc(var(--edge-band) + 50px) var(--site-gutter-left) calc(var(--edge-band) + 92px);
+      overflow: hidden;
+    }
+
+    .post-shell {
+      position: relative;
+      height: 100%;
+      width: 100%;
+      max-width: none;
+      margin: 0;
+    }
+
+    .post-title {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: var(--post-text-width);
+      margin: 0;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: clamp(2.6rem, 2.7vw, 4rem);
+      font-weight: 500;
+      line-height: 1.04;
+      letter-spacing: 0.01em;
+      text-align: left;
+      text-transform: lowercase;
+    }
+
+    .post-gallery {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: var(--post-gallery-width);
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 1.6rem;
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding-bottom: 1px;
+      scrollbar-width: none;
+    }
+
+    .post-gallery::-webkit-scrollbar {
+      display: none;
+    }
+
+    .post-shot {
+      flex: 0 0 auto;
+      margin: 0;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    .post-shot img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    #grain-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 10000;
+      opacity: 0.42;
+    }
+
+    @media (max-width: 960px) {
+      :root {
+        --outer-gutter: 10px;
+        --meta-side-margin: 18px;
+        --site-gutter-left: 4rem;
+        --site-gutter-right: 4rem;
+        --edge-band: 40px;
+        --post-gallery-width: min(58vw, 62rem);
+        --post-text-gap: 2rem;
+        --post-text-width: clamp(11rem, calc(50vw - (var(--post-gallery-width) / 2) - var(--site-gutter-left) - var(--post-text-gap)), 22rem);
+      }
+
+      .edge-meta__brand {
+        width: clamp(108px, 20vw, 176px);
+      }
+
+      .post-shell {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 640px) {
+      :root {
+        --outer-gutter: 8px;
+        --meta-side-margin: 0px;
+        --meta-size: 11.2px;
+        --edge-band: 82px;
+      }
+
+      html,
+      body {
+        overflow-x: hidden;
+      }
+
+      body {
+        overflow-y: auto;
+      }
+
+      .edge-meta {
+        mix-blend-mode: normal;
+      }
+
+      .edge-meta--top {
+        grid-template-columns: auto minmax(0, 1fr);
+        grid-template-areas:
+          "brand brand"
+          "left right";
+        row-gap: 6px;
+        align-items: center;
+        padding: 8px var(--outer-gutter) 6px;
+        background: rgba(250, 250, 250, 0.92);
+      }
+
+      .edge-meta--top .edge-meta__left {
+        grid-area: left;
+      }
+
+      .edge-meta--top .edge-meta__center {
+        grid-area: brand;
+      }
+
+      .edge-meta--top .edge-meta__right {
+        grid-area: right;
+        gap: 8px;
+      }
+
+      .edge-meta--top a,
+      .edge-meta--top button {
+        min-height: 32px;
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .edge-meta--bottom {
+        position: static;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 0 var(--outer-gutter) 28px;
+        background: var(--paper);
+      }
+
+      .edge-meta__bottom-note {
+        max-width: 124px;
+        transform: none;
+      }
+
+      .edge-meta__brand {
+        width: clamp(98px, 28vw, 124px);
+      }
+
+      #post-wrap {
+        position: static;
+        padding: calc(var(--edge-band) + 22px) var(--outer-gutter) 28px;
+        overflow: visible;
+      }
+
+      .post-shell {
+        display: block;
+        position: static;
+        height: auto;
+        max-width: 100%;
+      }
+
+      #about-overlay {
+        align-items: flex-start;
+        justify-content: center;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        padding: calc(var(--edge-band) + 18px) 20px 40px;
+      }
+
+      #about-text {
+        width: min(100%, 34rem);
+        max-width: none;
+        font-size: 1.6rem;
+        line-height: 1.38;
+        text-align: left;
+        letter-spacing: 0;
+      }
+
+      #about-text p:last-child,
+      #about-text p.about-contact:last-child {
+        text-align: left;
+        letter-spacing: 0;
+      }
+
+      #about-text .about-contact {
+        font-size: 1.4rem;
+        text-align: left;
+        overflow-wrap: anywhere;
+      }
+
+      #about-text .about-contact a {
+        display: block;
+        margin-top: 0.35em;
+      }
+
+      #about-text .about-contact .contact-separator {
+        display: none;
+      }
+
+      .post-title {
+        position: static;
+        width: auto;
+        margin-bottom: 1.8rem;
+        font-size: 2.2rem;
+      }
+
+      .post-shot {
+        margin-bottom: 0;
+      }
+
+      .post-gallery {
+        position: static;
+        top: auto;
+        bottom: auto;
+        left: auto;
+        width: auto;
+        transform: none;
+        display: flex;
+        overflow: visible;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="edge-meta edge-meta--top">
+    <nav class="edge-meta__left" aria-label="Navegação institucional">
+      <button id="nav-about-btn" type="button" aria-label="Abrir sobre">about</button>
+      <button id="nav-close-btn" type="button" aria-label="Fechar sobre">close</button>
+    </nav>
+    <div class="edge-meta__center">
+      <a class="edge-meta__home" href="../../../" aria-label="Ir para a home do casamento">
+        <img class="edge-meta__brand" src="../../../img/brand/marca-p-clean.svg" alt="miolo">
+      </a>
+    </div>
+    <nav class="edge-meta__right" aria-label="Navegação">
+      <a href="../../">casamentos</a>
+    </nav>
+  </header>
+
+  <main id="post-wrap" aria-label="julia ramil + tom">
+    <article class="post-shell">
+      <h1 class="post-title">julia ramil + tom</h1>
+      <section class="post-gallery" aria-label="galeria de imagens">
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/001.webp" alt="julia ramil + tom 1" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/002.webp" alt="julia ramil + tom 2" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/003.webp" alt="julia ramil + tom 3" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/004.webp" alt="julia ramil + tom 4" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/005.webp" alt="julia ramil + tom 5" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/006.webp" alt="julia ramil + tom 6" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/007.webp" alt="julia ramil + tom 7" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/008.webp" alt="julia ramil + tom 8" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/009.webp" alt="julia ramil + tom 9" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/010.webp" alt="julia ramil + tom 10" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/011.webp" alt="julia ramil + tom 11" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/012.webp" alt="julia ramil + tom 12" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/013.webp" alt="julia ramil + tom 13" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/014.webp" alt="julia ramil + tom 14" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/015.webp" alt="julia ramil + tom 15" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/016.webp" alt="julia ramil + tom 16" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/017.webp" alt="julia ramil + tom 17" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/018.webp" alt="julia ramil + tom 18" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/019.webp" alt="julia ramil + tom 19" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/020.webp" alt="julia ramil + tom 20" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/021.webp" alt="julia ramil + tom 21" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/022.webp" alt="julia ramil + tom 22" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/023.webp" alt="julia ramil + tom 23" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/024.webp" alt="julia ramil + tom 24" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/025.webp" alt="julia ramil + tom 25" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/026.webp" alt="julia ramil + tom 26" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/027.webp" alt="julia ramil + tom 27" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/028.webp" alt="julia ramil + tom 28" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/029.webp" alt="julia ramil + tom 29" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/030.webp" alt="julia ramil + tom 30" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/031.webp" alt="julia ramil + tom 31" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/032.webp" alt="julia ramil + tom 32" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/033.webp" alt="julia ramil + tom 33" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/034.webp" alt="julia ramil + tom 34" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/035.webp" alt="julia ramil + tom 35" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/036.webp" alt="julia ramil + tom 36" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/037.webp" alt="julia ramil + tom 37" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/038.webp" alt="julia ramil + tom 38" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/039.webp" alt="julia ramil + tom 39" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/040.webp" alt="julia ramil + tom 40" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/041.webp" alt="julia ramil + tom 41" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/042.webp" alt="julia ramil + tom 42" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/043.webp" alt="julia ramil + tom 43" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/044.webp" alt="julia ramil + tom 44" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/045.webp" alt="julia ramil + tom 45" loading="lazy" decoding="async">
+        </figure>
+        <figure class="post-shot">
+          <img src="../../img/posts/ju-tom/046.webp" alt="julia ramil + tom 46" loading="lazy" decoding="async">
+        </figure>
+      </section>
+    </article>
+  </main>
+
+  <footer class="edge-meta edge-meta--bottom" aria-hidden="true">
+    <div class="edge-meta__left"></div>
+    <div class="edge-meta__center">salvador · bh · sp · rio · floripa</div>
+    <div class="edge-meta__right">
+      <span class="edge-meta__bottom-note">explore.<br>conteudo, imagem<br>e presenca.</span>
+    </div>
+  </footer>
+  <div id="about-overlay" role="dialog" aria-modal="true" aria-label="Sobre">
+    <div id="about-text">
+      <p>sem verdade, não há foto.</p>
+      <p>entendemos que a fotografia não registra o amor porque ela mora na superfície; ao contrário do amor que vive no íntimo. e lá não se entra. então nosso papel é de registrar signos que representam o que nós não alcançaremos.</p>
+      <p>diante disso, trabalhamos com uma linguagem que sustenta o registro desromantizado do casamento, buscando sempre respeitar o que mora no íntimo e reservando isso somente para o casal. o que vocês sentem diz a respeito somente a vocês! é desromantico, é distanciado e é honesto.</p>
+      <p>não acreditamos em casamentos com formatos megalomaníacos regados a roteiros e protocolos. não achamos que contos de fadas existam e quanto a príncipes e princesas, até acredito que existam; mas que fiquem restritos a monarquia. aqui preferimos pessoas reais, palpáveis, vivas e que respiram. e que transpiram e que vivem da forma que acham que devam viver.</p>
+    </div>
+  </div>
+  <canvas id="grain-canvas" aria-hidden="true"></canvas>
+
+  <script>
+    (function () {
+      const grainCanvas = document.getElementById('grain-canvas');
+      const grainCtx = grainCanvas.getContext('2d', { alpha: true });
+      const aboutOverlay = document.getElementById('about-overlay');
+      const btnAbout = document.getElementById('nav-about-btn');
+      const btnClose = document.getElementById('nav-close-btn');
+
+      function openAbout() {
+        if (!aboutOverlay || !btnAbout || !btnClose) return;
+
+        aboutOverlay.classList.add('active');
+        btnAbout.style.display = 'none';
+        btnClose.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeAbout() {
+        if (!aboutOverlay || !btnAbout || !btnClose) return;
+
+        aboutOverlay.classList.remove('active');
+        btnAbout.style.display = 'block';
+        btnClose.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+
+      function resizeGrainCanvas() {
+        grainCanvas.width = window.innerWidth;
+        grainCanvas.height = window.innerHeight;
+      }
+
+      function drawGrain() {
+        const width = grainCanvas.width;
+        const height = grainCanvas.height;
+        const imageData = grainCtx.createImageData(width, height);
+        const buffer = imageData.data;
+
+        for (let i = 0; i < buffer.length; i += 4) {
+          const noise = Math.random() * 255;
+          const alpha = Math.random() > 0.55 ? 95 : 35;
+
+          buffer[i] = noise;
+          buffer[i + 1] = noise;
+          buffer[i + 2] = noise;
+          buffer[i + 3] = alpha;
+        }
+
+        grainCtx.putImageData(imageData, 0, 0);
+      }
+
+      function refresh() {
+        resizeGrainCanvas();
+        drawGrain();
+      }
+
+      window.addEventListener('resize', refresh, { passive: true });
+      btnAbout?.addEventListener('click', openAbout);
+      btnClose?.addEventListener('click', closeAbout);
+      aboutOverlay?.addEventListener('click', (event) => {
+        if (event.target === aboutOverlay) closeAbout();
+      });
+      refresh();
+      setInterval(drawGrain, 180);
+    }());
+  </script>
+</body>
+</html>
